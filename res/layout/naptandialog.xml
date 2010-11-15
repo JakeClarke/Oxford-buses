@@ -3,6 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
-<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="Enter the naptan code that you want to know bus times for. (these are the 6 dgit codes that are on each stops)" android:layout_width="fill_parent"></TextView>
-<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@+id/TextView01" android:id="@+id/NaptanEditText" android:text="Naptan code"></EditText>
+<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="Enter the naptan code that you want to know bus times for. (these are the 6 dgit codes that are on each stop)" android:layout_width="fill_parent"></TextView>
+<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@+id/TextView01" android:id="@+id/NaptanEditText" android:numeric="integer" android:hint="Naptan Code"></EditText>
 </RelativeLayout>

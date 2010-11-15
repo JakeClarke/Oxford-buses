@@ -20,16 +20,19 @@ public class Stop {
 	@Override
 	public String toString()
 	{
-		return this.stopName + "\n - " + this.naptancode + "\n - direction" + stopBearing;
-		//return this.stopName + "\n - " + this.naptancode + "\n - direction" + this.getDirection();
+		return this.stopName + "\n - " + this.naptancode + "\n - direction: " + this.getDirection();
 		
 	}
 	
 	public String getDirection()
 	{
+		
 		String directions[] = {"N", "NE", "E", "SE", "S", "SW", "NW"};
-		int direction = (int)Math.round((  ((double)stopBearing % 360) / 45));
-		return directions[ direction - 1 ];
+		int direction = (int)Math.floor(  ((double)stopBearing % 360) / 45);
+		
+		direction %= 7;
+		return directions[ direction ];
+		
 		
 	}
 	
