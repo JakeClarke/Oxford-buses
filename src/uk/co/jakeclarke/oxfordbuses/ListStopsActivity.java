@@ -39,9 +39,9 @@ public class ListStopsActivity extends ListActivity {
 		      // When clicked, show a toast with the TextView text
 		      Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
 		          Toast.LENGTH_SHORT).show();
-		      
+		      Stop SelectedStop = (Stop)parent.getAdapter().getItem(position);
 		      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
-		    		  + ListStopsActivity.this.StopArray.get(position).naptancode + "&textonly=1"));
+		    		  + SelectedStop.naptancode + "&textonly=1"));
 		      startActivity(i);
 		    }
 		  });
