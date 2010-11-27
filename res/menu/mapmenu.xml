@@ -5,4 +5,5 @@
 <item android:title="Refresh stop db" android:id="@+id/refreshbutton" android:titleCondensed="Refresh"></item>
 <item android:title="Naptan" android:id="@+id/naptanbutton"></item>
 <item android:title="My Location" android:id="@+id/mylocation"></item>
+<item android:id="@+id/mapmode" android:title="Map Mode"></item>
 </menu>

@@ -51,6 +51,7 @@ public class StopMapActivity extends MapActivity {
 	MapController mc;
 	MyLocationOverlay myLocation;
 	MapView mapView;
+	boolean satelliteview = false;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class StopMapActivity extends MapActivity {
         myLocation.enableMyLocation();
         myLocation.enableCompass();
         
-        mapView.setSatellite(true);
+        mapView.setSatellite(satelliteview);
         // get MapController that helps to set/get location, zoom etc.
         mc = mapView.getController();
         // set the location over oxford
@@ -169,6 +170,18 @@ public class StopMapActivity extends MapActivity {
     			Toast.makeText(this, "Location not available.", Toast.LENGTH_LONG).show();
     		}
 			return true;
+    	case R.id.mapmode:
+    		this.satelliteview = !this.satelliteview;
+    		if(this.satelliteview)
+    		{
+    			Toast.makeText(this, "Setting map to satellite", Toast.LENGTH_LONG).show();
+    		}
+    		else
+    		{
+    			Toast.makeText(this, "Setting map to normal view", Toast.LENGTH_LONG).show();
+    		}
+    		mapView.setSatellite(this.satelliteview);
+    		return true;
     	default:
     		return super.onOptionsItemSelected(item);
     		
