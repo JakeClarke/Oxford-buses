@@ -15,8 +15,9 @@ public class StopProvider {
 	private static final String TAG = "StopProvider";
 
     private static final String DATABASE_NAME = "stop.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String TABLE_NAME = "stops";
+    private static final String FAVOURITES_TABLE_NAME = "favourites";
     private static final String KEY_NAPTAN = "naptancode";
     private static final String KEY_COORDS = "coords";
     private static final String KEY_STOPNAME = "stopName";
@@ -52,14 +53,30 @@ public class StopProvider {
 					KEY_STOPBEARING + " integer, " +
 					KEY_PARENTMAP + " integer);" 
 					);
+			createFavouritesTable(db);
 
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+		public void onUpgrade(SQLiteDatabase db, int oldversion, int newVersion) {
 			// TODO Auto-generated method stub
-			db.execSQL("DROP TABLE IF EXISTS" + TABLE_NAME);
+			if(oldversion == 2 && newVersion == 3)
+			{
+				createFavouritesTable(db);
+			}
+			else {
+				db.execSQL("DROP TABLE IF EXISTS" + TABLE_NAME);
+				db.execSQL("DROP TABLE IF EXISTS" + FAVOURITES_TABLE_NAME);
+			}
+			
 
+		}
+		
+		private void createFavouritesTable(SQLiteDatabase db)
+		{
+			db.execSQL("CREATE TABLE " + FAVOURITES_TABLE_NAME +
+					" (" + KEY_NAPTAN + "  text primary key, " +
+					KEY_STOPNAME + " text);");
 		}
 	}
 	
@@ -86,13 +103,31 @@ public class StopProvider {
 		
 	}
 	
+	public long insertFavourite(String stopname, String naptancode)
+	{
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_NAPTAN, naptancode);
+		initialValues.put(KEY_STOPNAME, stopname);
+		return db.insert(FAVOURITES_TABLE_NAME, null, initialValues);
+	}
+	
 	public boolean deleteStop(String naptan)
 	{
 		return db.delete(TABLE_NAME, KEY_NAPTAN + "=" + naptan , null) > 0;
 	}
 	
+	public boolean deleteFavourite(String naptan)
+	{
+		return db.delete(FAVOURITES_TABLE_NAME, KEY_NAPTAN + "=" + naptan , null) > 0;
+	}
+	
 	public boolean clear(){
 		return db.delete(TABLE_NAME, "1", null) > 0;
+	}
+	
+	public boolean clearFavourites()
+	{
+		return db.delete(FAVOURITES_TABLE_NAME, "1", null) > 0;
 	}
 	
 	public Cursor getAllStops()
@@ -103,6 +138,14 @@ public class StopProvider {
 		return mCursor;
 	}
 	
+	public Cursor getAllFavourites()
+	{
+		Cursor favCursor = db.query(true, FAVOURITES_TABLE_NAME, new String[]{KEY_NAPTAN, KEY_STOPNAME}, null, null, null, null, KEY_STOPNAME, null);
+		if(favCursor != null)
+			favCursor.moveToFirst();
+		return favCursor;
+	}
+	
 	public int NumberOfRows()
 	{
 		int res;
@@ -111,6 +154,15 @@ public class StopProvider {
 		c.close();
 		return res;
 		
+	}
+	
+	public int NumberOfFavourites()
+	{
+		int res;
+		Cursor c = this.getAllFavourites();
+		res = c.getCount();
+		c.close();
+		return res;
 	}
 	
 	
