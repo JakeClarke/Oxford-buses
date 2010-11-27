@@ -18,7 +18,7 @@ import uk.co.jakeclarke.oxfordbuses.datatypes.grabbers.*;
 public class GetStopsActivity extends Activity {
 
 	int MapNumbers[] = {2507, 2511,2512, 2513, 2516, 2517, 2520};
-	ProgressThread progressThread;
+	static ProgressThread progressThread;
 	ProgressDialog progressDialog;
 	Map<Integer, MapCoordsData> md;
 	
@@ -58,8 +58,33 @@ public class GetStopsActivity extends Activity {
         progressDialog.setCancelable(false);
         sp = new StopProvider(this);
         progressDialog.show();
-        progressThread = new ProgressThread(handler);
-        progressThread.start();
+        
+        if(progressThread == null || !progressThread.isAlive()){
+        	progressThread = new ProgressThread(new Handler() {
+                public void handleMessage(Message msg) {
+                    int total = msg.getData().getInt("total");
+                    progressDialog.setProgress(total);
+                    if (total >= md.size()){
+                        //dismissDialog(0);
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        	progressThread.start();
+        }
+        else {
+            
+            progressThread.setHandler(new Handler() {
+                public void handleMessage(Message msg) {
+                    int total = msg.getData().getInt("total");
+                    progressDialog.setProgress(total);
+                    if (total >= md.size()){
+                        //dismissDialog(0);
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        }
     }
     
     public void notifyStops(int stops)
@@ -78,16 +103,6 @@ public class GetStopsActivity extends Activity {
     	alert.show();
     }
     
-    final Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            int total = msg.getData().getInt("total");
-            progressDialog.setProgress(total);
-            if (total >= md.size()){
-                //dismissDialog(0);
-                progressDialog.dismiss();
-            }
-        }
-    };
     
     private class ProgressThread extends Thread {
         Handler mHandler;
@@ -95,6 +110,11 @@ public class GetStopsActivity extends Activity {
        
         ProgressThread(Handler h) {
             mHandler = h;
+        }
+        
+        void setHandler(Handler handler)
+        {
+        	mHandler = handler;
         }
        
         public void run() {
