@@ -15,6 +15,7 @@
             </intent-filter>
     </activity>
 <activity android:name="ListStopsActivity"></activity>
+<activity android:name="ListFavouriteStopsActivity"></activity>
 </application>
 
 

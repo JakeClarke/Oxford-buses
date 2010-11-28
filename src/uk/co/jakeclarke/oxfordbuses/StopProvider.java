@@ -23,6 +23,7 @@ public class StopProvider {
     private static final String KEY_STOPNAME = "stopName";
     private static final String KEY_STOPBEARING = "stopBearing";
     private static final String KEY_PARENTMAP = "parentMap";
+    private static final String KEY_ID = " _id";
     
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
@@ -47,7 +48,8 @@ public class StopProvider {
 		public void onCreate(SQLiteDatabase db) {
 			// TODO Auto-generated method stub
 			db.execSQL("CREATE TABLE " + TABLE_NAME +
-					" (" + KEY_NAPTAN + " text primary key," + 
+					" (" +
+					KEY_NAPTAN + " text PRIMARY KEY," + 
 					KEY_COORDS + " text, " +
 					KEY_STOPNAME + " text, " +
 					KEY_STOPBEARING + " integer, " +
@@ -75,7 +77,8 @@ public class StopProvider {
 		private void createFavouritesTable(SQLiteDatabase db)
 		{
 			db.execSQL("CREATE TABLE " + FAVOURITES_TABLE_NAME +
-					" (" + KEY_NAPTAN + "  text primary key, " +
+					" (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ KEY_NAPTAN + "  text, " +
 					KEY_STOPNAME + " text);");
 		}
 	}
@@ -140,7 +143,7 @@ public class StopProvider {
 	
 	public Cursor getAllFavourites()
 	{
-		Cursor favCursor = db.query(true, FAVOURITES_TABLE_NAME, new String[]{KEY_NAPTAN, KEY_STOPNAME}, null, null, null, null, KEY_STOPNAME, null);
+		Cursor favCursor = db.query(true, FAVOURITES_TABLE_NAME, new String[]{KEY_ID, KEY_NAPTAN, KEY_STOPNAME}, null, null, null, null, KEY_STOPNAME, null);
 		if(favCursor != null)
 			favCursor.moveToFirst();
 		return favCursor;

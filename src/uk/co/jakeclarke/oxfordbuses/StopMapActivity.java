@@ -182,6 +182,9 @@ public class StopMapActivity extends MapActivity {
     		}
     		mapView.setSatellite(this.satelliteview);
     		return true;
+    	case R.id.favouritestops:
+    		i = new Intent(this, ListFavouriteStopsActivity.class);
+    		this.startActivity(i);
     	default:
     		return super.onOptionsItemSelected(item);
     		
@@ -193,7 +196,7 @@ public class StopMapActivity extends MapActivity {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setTitle("Database refresh required");
     	builder.setMessage("This is the first time this app has been run and will need to build the stop database. \n" +
-    			"This will take a couple of minutes on a mobile connection.");
+    			"This will take a couple of minutes on a mobile connection. This only needs to take place once.");
     	builder.setCancelable(false);
     	builder.setPositiveButton("Build now", new OnClickListener()
     	{

@@ -6,4 +6,5 @@
 <item android:title="Naptan" android:id="@+id/naptanbutton"></item>
 <item android:title="My Location" android:id="@+id/mylocation"></item>
 <item android:id="@+id/mapmode" android:title="Map Mode"></item>
+<item android:id="@+id/favouritestops" android:titleCondensed="Favs" android:title="Favourite Stops"></item>
 </menu>
