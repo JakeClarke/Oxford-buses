@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 
 public class StopProvider {
 	
@@ -116,12 +117,13 @@ public class StopProvider {
 	
 	public boolean deleteStop(String naptan)
 	{
-		return db.delete(TABLE_NAME, KEY_NAPTAN + "=" + naptan , null) > 0;
+		return db.delete(TABLE_NAME, KEY_NAPTAN + "='" + naptan  + "'", null) > 0;
 	}
 	
 	public boolean deleteFavourite(String naptan)
 	{
-		return db.delete(FAVOURITES_TABLE_NAME, KEY_NAPTAN + "=" + naptan , null) > 0;
+		
+		return db.delete(FAVOURITES_TABLE_NAME, KEY_NAPTAN + "='" + naptan + "'", null) > 0;
 	}
 	
 	public boolean clear(){
