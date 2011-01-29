@@ -155,9 +155,6 @@ public class StopMapActivity extends MapActivity {
     	Intent i = null;
     	switch(item.getItemId())
     	{
-    	case R.id.naptanbutton:
-    		search();
-    		return true;
     	case R.id.listbutton:
     		i = new Intent(StopMapActivity.this, ListStopsActivity.class);
 	        startActivity(i);
