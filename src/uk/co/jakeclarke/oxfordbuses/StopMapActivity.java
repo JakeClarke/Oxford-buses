@@ -149,11 +149,6 @@ public class StopMapActivity extends MapActivity {
     		});
     		builder.create().show();
     		return true;
-    	case R.id.refreshbutton:
-    		i = new Intent(StopMapActivity.this, GetStopsActivity.class);
-	        startActivity(i);
-	        this.finish();
-	        return true;
     	case R.id.listbutton:
     		i = new Intent(StopMapActivity.this, ListStopsActivity.class);
 	        startActivity(i);
@@ -185,6 +180,11 @@ public class StopMapActivity extends MapActivity {
     	case R.id.favouritestops:
     		i = new Intent(this, ListFavouriteStopsActivity.class);
     		this.startActivity(i);
+    		return true;
+    	case R.id.menu_settings:
+    		i = new Intent(this, SettingsActivity.class);
+    		startActivity(i);
+    		return true;
     	default:
     		return super.onOptionsItemSelected(item);
     		

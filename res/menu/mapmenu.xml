@@ -2,9 +2,9 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
 <item android:title="List Stops" android:id="@+id/listbutton" android:titleCondensed="List"></item>
-<item android:title="Refresh stop db" android:id="@+id/refreshbutton" android:titleCondensed="Refresh"></item>
 <item android:title="Naptan" android:id="@+id/naptanbutton"></item>
 <item android:title="My Location" android:id="@+id/mylocation"></item>
 <item android:id="@+id/mapmode" android:title="Map Mode"></item>
 <item android:id="@+id/favouritestops" android:titleCondensed="Favs" android:title="Favourite Stops"></item>
+<item android:id="@+id/menu_settings" android:title="Settings" />
 </menu>

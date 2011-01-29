@@ -2,4 +2,7 @@
 <resources>
     <string name="hello">Hello World, Menu!</string>
     <string name="app_name">Oxford buses</string>
+    
+    <string name="settings_reload_title">Reload buses</string>
+    <string name="settings_reload_summary">Fetch all buses stops from Internet</string>
 </resources>

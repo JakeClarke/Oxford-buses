@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory>
+    
+        <PreferenceScreen android:title="@string/settings_reload_title"
+                          android:summary="@string/settings_reload_summary">
+        
+            <intent android:targetPackage="uk.co.jakeclarke.oxfordbuses"
+                    android:targetClass="uk.co.jakeclarke.oxfordbuses.GetStopsActivity" />
+                          
+        </PreferenceScreen>
+    
+    </PreferenceCategory>
+
+</PreferenceScreen>
