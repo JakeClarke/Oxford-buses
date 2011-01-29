@@ -112,8 +112,33 @@ public class StopMapActivity extends MapActivity {
         super.onStop();
     }
     
+    private void search() {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater factory = LayoutInflater.from(this);
+		final View dialogLayout = factory.inflate(R.layout.naptandialog, null);
+		builder.setView(dialogLayout);
+		builder.setTitle("Manual stop lookup");
+		builder.setPositiveButton("Lookup", new OnClickListener()
+		
+		{
+
+			@Override
+			public void onClick(DialogInterface d, int which) {
+				EditText naptanEt = (EditText)dialogLayout.findViewById(R.id.NaptanEditText);
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
+			    		  + naptanEt.getText().toString() + "&textonly=1"));
+				StopMapActivity.this.startActivity(i);
+			}
+			
+		});
+		builder.create().show();
+    }
     
-    
+    @Override
+    public boolean onSearchRequested() {
+    	search();
+    	return true;
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -129,25 +154,7 @@ public class StopMapActivity extends MapActivity {
     	switch(item.getItemId())
     	{
     	case R.id.naptanbutton:
-    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    		LayoutInflater factory = LayoutInflater.from(this);
-    		final View dialogLayout = factory.inflate(R.layout.naptandialog, null);
-    		builder.setView(dialogLayout);
-    		builder.setTitle("Manual stop lookup");
-    		builder.setPositiveButton("Lookup", new OnClickListener()
-    		
-    		{
-
-				@Override
-				public void onClick(DialogInterface d, int which) {
-					EditText naptanEt = (EditText)dialogLayout.findViewById(R.id.NaptanEditText);
-					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
-				    		  + naptanEt.getText().toString() + "&textonly=1"));
-					StopMapActivity.this.startActivity(i);
-				}
-    			
-    		});
-    		builder.create().show();
+    		search();
     		return true;
     	case R.id.listbutton:
     		i = new Intent(StopMapActivity.this, ListStopsActivity.class);
