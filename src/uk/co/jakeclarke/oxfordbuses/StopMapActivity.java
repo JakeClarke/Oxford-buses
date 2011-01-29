@@ -6,18 +6,15 @@ package uk.co.jakeclarke.oxfordbuses;
 import java.util.List;
 
 import uk.co.jakeclarke.oxfordbuses.mapoverlays.StopItemizedOverlay;
-
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,7 +48,8 @@ public class StopMapActivity extends MapActivity {
 	MapController mc;
 	MyLocationOverlay myLocation;
 	MapView mapView;
-	boolean satelliteview = false;
+	
+	private SharedPreferences prefs;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +57,14 @@ public class StopMapActivity extends MapActivity {
         
         Maps.ParseMaps(getAssets());
         
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         myLocation = new MyLocationOverlay(this, mapView);
         myLocation.enableMyLocation();
         myLocation.enableCompass();
         
-        mapView.setSatellite(satelliteview);
         // get MapController that helps to set/get location, zoom etc.
         mc = mapView.getController();
         // set the location over oxford
@@ -101,6 +100,9 @@ public class StopMapActivity extends MapActivity {
     {
     	myLocation.enableCompass();
         myLocation.enableMyLocation();
+        
+        mapView.setSatellite(prefs.getBoolean("satellite", false));
+        
         super.onResume();
     }
     
@@ -172,18 +174,6 @@ public class StopMapActivity extends MapActivity {
     			Toast.makeText(this, "Location not available.", Toast.LENGTH_LONG).show();
     		}
 			return true;
-    	case R.id.mapmode:
-    		this.satelliteview = !this.satelliteview;
-    		if(this.satelliteview)
-    		{
-    			Toast.makeText(this, "Setting map to satellite", Toast.LENGTH_LONG).show();
-    		}
-    		else
-    		{
-    			Toast.makeText(this, "Setting map to normal view", Toast.LENGTH_LONG).show();
-    		}
-    		mapView.setSatellite(this.satelliteview);
-    		return true;
     	case R.id.favouritestops:
     		i = new Intent(this, ListFavouriteStopsActivity.class);
     		this.startActivity(i);

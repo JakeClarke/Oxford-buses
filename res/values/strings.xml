@@ -5,4 +5,8 @@
     
     <string name="settings_reload_title">Reload buses</string>
     <string name="settings_reload_summary">Fetch all buses stops from Internet</string>
+    
+    <string name="settings_satellite_title">Use satellite view?</string>
+    <string name="settings_satellite_summary_on">Currently using satellite view</string>
+    <string name="settings_satellite_summary_off">Currently using map view</string>
 </resources>

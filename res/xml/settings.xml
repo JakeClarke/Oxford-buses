@@ -3,6 +3,11 @@
 
     <PreferenceCategory>
     
+        <CheckBoxPreference android:title="@string/settings_satellite_title"
+                            android:summaryOn="@string/settings_satellite_summary_on"
+                            android:summaryOff="@string/settings_satellite_summary_off"
+                            android:key="satellite" />
+    
         <PreferenceScreen android:title="@string/settings_reload_title"
                           android:summary="@string/settings_reload_summary">
         
