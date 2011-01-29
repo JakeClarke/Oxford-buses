@@ -10,6 +10,7 @@ import uk.me.jstott.jcoord.*;
 
 public class Stop {
 	
+	public static final String DIRECTIONS[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
 
 	public String naptancode = "";
 	public String coords = "";
@@ -26,14 +27,8 @@ public class Stop {
 	
 	public String getDirection()
 	{
-		
-		String directions[] = {"N", "NE", "E", "SE", "S", "SW", "NW"};
-		int direction = (int)Math.floor(  ((double)stopBearing % 360) / 45);
-		
-		direction %= 7;
-		return directions[ direction ];
-		
-		
+		int direction = ((stopBearing + 22) % 360) / 45;
+		return DIRECTIONS[direction];
 	}
 	
 	public Stop(){}
