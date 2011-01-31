@@ -6,6 +6,7 @@ import uk.co.jakeclarke.oxfordbuses.ListStopsActivity;
 import uk.co.jakeclarke.oxfordbuses.Maps;
 import uk.co.jakeclarke.oxfordbuses.StopProvider;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
+import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import uk.me.jstott.jcoord.LatLng;
 import uk.me.jstott.jcoord.OSRef;
 import android.app.AlertDialog;
@@ -135,8 +136,9 @@ public class StopItemizedOverlay extends ItemizedOverlay {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
-			    		  + StopItemizedOverlay.this.mapNodes.get(index).childStops.get(which).naptancode + "&textonly=1"));
+				String naptan = mapNodes.get(index).childStops.get(which).naptancode;
+				Intent i = new Intent(Intent.ACTION_VIEW, 
+						OxontimeUtils.getTimesUri(naptan, c));
 				StopItemizedOverlay.this.c.startActivity(i);
 				
 			}

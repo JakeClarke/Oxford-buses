@@ -6,6 +6,7 @@ package uk.co.jakeclarke.oxfordbuses;
 import java.util.List;
 
 import uk.co.jakeclarke.oxfordbuses.mapoverlays.StopItemizedOverlay;
+import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -127,8 +128,8 @@ public class StopMapActivity extends MapActivity {
 			@Override
 			public void onClick(DialogInterface d, int which) {
 				EditText naptanEt = (EditText)dialogLayout.findViewById(R.id.NaptanEditText);
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
-			    		  + naptanEt.getText().toString() + "&textonly=1"));
+				Intent i = new Intent(Intent.ACTION_VIEW, 
+						OxontimeUtils.getTimesUri(naptanEt.getText().toString(), StopMapActivity.this));
 				StopMapActivity.this.startActivity(i);
 			}
 			

@@ -3,6 +3,7 @@ package uk.co.jakeclarke.oxfordbuses;
 import java.util.ArrayList;
 
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
+import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -43,8 +44,8 @@ public class ListStopsActivity extends ListActivity {
 		      Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
 		          Toast.LENGTH_SHORT).show();
 		      Stop SelectedStop = (Stop)parent.getAdapter().getItem(position);
-		      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
-		    		  + SelectedStop.naptancode + "&textonly=1"));
+		      Intent i = new Intent(Intent.ACTION_VIEW, 
+		    		  OxontimeUtils.getTimesUri(SelectedStop.naptancode, ListStopsActivity.this));
 		      startActivity(i);
 		    }
 		  });

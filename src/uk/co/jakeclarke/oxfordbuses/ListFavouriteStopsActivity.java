@@ -1,5 +1,6 @@
 package uk.co.jakeclarke.oxfordbuses;
 
+import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -52,8 +53,9 @@ public class ListFavouriteStopsActivity extends ListActivity {
 				// get the data cursor for the view
 				Cursor selectedItem = (Cursor)parent.getAdapter().getItem(position);
 				Toast.makeText(ListFavouriteStopsActivity.this, "Showing timetable", Toast.LENGTH_LONG).show();
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oxontime.com/pip/stop.asp?naptan=" 
-			    		  + selectedItem.getString(1) + "&textonly=1"));
+				String naptan = selectedItem.getString(1);
+				Intent i = new Intent(Intent.ACTION_VIEW, 
+						OxontimeUtils.getTimesUri(naptan, ListFavouriteStopsActivity.this));
 				ListFavouriteStopsActivity.this.startActivity(i);
 			}
 			
