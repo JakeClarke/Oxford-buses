@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_map">
     
         <CheckBoxPreference android:title="@string/settings_satellite_title"
                             android:summaryOn="@string/settings_satellite_summary_on"
@@ -15,6 +15,16 @@
                     android:targetClass="uk.co.jakeclarke.oxfordbuses.GetStopsActivity" />
                           
         </PreferenceScreen>
+    
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="settings_times">
+    
+        <CheckBoxPreference android:title="@string/settings_oxontime_textmode_title"
+                            android:summaryOn="@string/settings_oxontime_textmode_summary_on"
+                            android:summaryOff="@string/settings_oxontime_textmode_summary_off"
+                            android:key="oxontime_textmode"
+                            android:defaultValue="true" />
     
     </PreferenceCategory>
 
