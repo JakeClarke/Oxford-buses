@@ -35,6 +35,8 @@
     <!-- End SettingsActivity Labels -->
     
     <!-- Start Adapters Labels -->
+    <string name="stop_direction">Direction: %1$s</string>
+    
     <string name="favouritestop_favstopname">FavStopName</string>
     <string name="favouritestop_naptan">naptan</string>
     <!-- End Adapters Labels -->
@@ -59,7 +61,7 @@
     <string name="favouritedialogs_remove_stop_from_favourite">Would you like to remove the stop %1$s from your favourites?</string>
     <string name="favouritedialogs_yes">Yes</string>
     <string name="favouritedialogs_no">No</string>
-    <string name="favouritedialogs_removed">Removed from favourites: %1$d</string>
+    <string name="favouritedialogs_removed">Removed from favourites: %1$s</string>
     <string name="favouritedialogs_add_stop">Add Stop</string>
     
     <string name="liststopsdialogs_favourite_stop">Favourite stop ?</string>

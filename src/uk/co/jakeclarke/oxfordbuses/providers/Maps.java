@@ -1,4 +1,4 @@
-package uk.co.jakeclarke.oxfordbuses;
+package uk.co.jakeclarke.oxfordbuses.providers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,46 +12,50 @@ import android.content.res.AssetManager;
 
 import com.csvreader.*;
 
- public class Maps {
+public class Maps
+{
 	static private Map<Integer, MapCoordsData> m = null;
-	
-	static public void ParseMaps(AssetManager am)
+
+	static public void parseMaps(AssetManager am)
 	{
-		if (m == null) {
-			
+		if (m == null)
+		{
 			m = new HashMap<Integer, MapCoordsData>();
-			
+
 			// construct the table.
 			CsvReader cr = null;
-			try {
+
+			try
+			{
 				cr = new CsvReader(new InputStreamReader(am.open("maps.csv")));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			}
+			catch (FileNotFoundException e)
+			{
 				e.printStackTrace();
 			}
-			try {
-				while (cr.readRecord()) {
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
+			try
+			{
+				while (cr.readRecord())
+				{
 					m.put(Integer.parseInt(cr.get(0)), new MapCoordsData(Double
 							.parseDouble(cr.get(1)), Double.parseDouble(cr
-							.get(2))));
+									.get(2))));
 				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 
-	static public Map<Integer, MapCoordsData> getM() {
+	static public Map<Integer, MapCoordsData> getM()
+	{
 		return m;
 	}
-
-
 }
- 
-

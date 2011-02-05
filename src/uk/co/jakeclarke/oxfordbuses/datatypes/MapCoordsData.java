@@ -1,15 +1,36 @@
 package uk.co.jakeclarke.oxfordbuses.datatypes;
 
-public class MapCoordsData {
-	public double X;
-	public double Y;
+public class MapCoordsData
+{
+	private double x;
+	private double y;
 
-	public MapCoordsData(double x, double y) {
-		X = x;
-		Y = y;
+	public MapCoordsData() {}
+
+	public MapCoordsData(double x, double y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 
-	public MapCoordsData() {
-		// TODO Auto-generated constructor stub
+	public double getX()
+	{
+		return x;
 	}
+
+	public void setX(double x)
+	{
+		this.x = x;
+	}
+
+	public double getY()
+	{
+		return y;
+	}
+
+	public void setY(double y)
+	{
+		this.y = y;
+	}
+
 }
