@@ -32,12 +32,12 @@ public class GetStopsActivity extends Activity
 		Maps.parseMaps(GetStopsActivity.this.getAssets());
 
 		md = Maps.getM();
+		sp = new StopProvider(this);
 		progressDialog = new ProgressDialog(GetStopsActivity.this);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		progressDialog.setMax(md.size());
 		progressDialog.setMessage(getString(R.string.getstopsdialogs_getting_stops));
 		progressDialog.setCancelable(false);
-		sp = new StopProvider(this);
 		progressDialog.show();
 
 		if(progressThread == null || !progressThread.isAlive())

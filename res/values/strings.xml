@@ -16,7 +16,7 @@
     
     <!-- Start ListFavouriteStopsActivity Labels -->
     <string name="favourite_title">Favourite stops</string>
-    <string name="favourite_showing_timetable"></string>
+    <string name="favourite_showing_timetable">Showing timetable</string>
     <string name="favourite_menu_add_stop">Add Stop</string>
     <string name="favourite_menu_add">Add</string>
     <!-- End ListFavouriteStopsActivity Labels -->

@@ -52,8 +52,7 @@ public class RegularStopAdapter extends BaseAdapter
 
 		if (convertView == null)
 		{
-			rowLayout = (LinearLayout)LayoutInflater.from(c).inflate
-			(R.layout.stoplistitem, parent, false);
+			rowLayout = (LinearLayout)LayoutInflater.from(c).inflate(R.layout.item_renderer, parent, false);
 			TextView stopName = (TextView)rowLayout.findViewById(R.id.stopname);
 			TextView stopNaptanCode = (TextView)rowLayout.findViewById(R.id.stopnaptan);
 			TextView stopDirection = (TextView)rowLayout.findViewById(R.id.stopdirection);

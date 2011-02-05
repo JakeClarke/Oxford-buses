@@ -35,10 +35,10 @@ public class ProgressThread extends Thread
 			GetStopsActivity localContext = (GetStopsActivity) context;
 			total = 0;
 
-			for (int Map : localContext.getMd().keySet())
+			for (int map : localContext.getMd().keySet())
 			{
 				StopScrape scraper = new StopScrape();
-				List<Stop> tempStops = scraper.getStops(Map);
+				List<Stop> tempStops = scraper.getStops(map);
 
 				for(Stop istop : tempStops)
 				{
@@ -60,12 +60,14 @@ public class ProgressThread extends Thread
 			{
 				public void run()
 				{
-					GetStopsActivity localContext = (GetStopsActivity) context;
-					localContext.notifyStops(localContext.getStops().size());
+					ProgressDialog progressDialog = new ProgressDialog(context);
+					progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+					progressDialog.setMessage(context.getString(R.string.getstopsdialogs_saving_stops));
+					progressDialog.show();
 				}
 			});
 			
-			for(Stop istop : ((GetStopsActivity) context).getStops())
+			for(Stop istop : localContext.getStops())
 			{
 				sp.insertStop(istop);
 			}
@@ -74,11 +76,8 @@ public class ProgressThread extends Thread
 			{
 				public void run()
 				{
-					ProgressDialog progressDialog = new ProgressDialog(context);
-					progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-					progressDialog.setMessage(context.getString(R.string.getstopsdialogs_saving_stops));
-					progressDialog.show();
-
+					GetStopsActivity localContext = (GetStopsActivity) context;
+					localContext.notifyStops(localContext.getStops().size());
 				}
 			});
 		}

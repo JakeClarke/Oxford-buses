@@ -3,7 +3,6 @@ package uk.co.jakeclarke.oxfordbuses;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.jakeclarke.oxfordbuses.adapters.RegularStopAdapter;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
 import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
@@ -15,8 +14,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -32,7 +31,7 @@ public class ListStopsActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 
 		updateStopsArray();
-		setListAdapter(new RegularStopAdapter(this, stopArray));
+		setListAdapter(new ArrayAdapter<Stop>(this, R.layout.stoplistitem, stopArray));
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
 
@@ -42,11 +41,11 @@ public class ListStopsActivity extends ListActivity
 					int position, long id)
 			{
 				// When clicked, show a toast with the TextView text
-				Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-						Toast.LENGTH_SHORT).show();
-				Stop SelectedStop = (Stop)parent.getAdapter().getItem(position);
+				Stop selectedStop = (Stop)parent.getAdapter().getItem(position);
+				final String stopName = selectedStop.getStopName(), stopNaptan = selectedStop.getNaptanCode();
+				Toast.makeText(getApplicationContext(), stopName, Toast.LENGTH_SHORT).show();
 				Intent i = new Intent(Intent.ACTION_VIEW, 
-						OxontimeUtils.getTimesUri(SelectedStop.getNaptanCode(), ListStopsActivity.this));
+						OxontimeUtils.getTimesUri(stopNaptan, ListStopsActivity.this));
 				startActivity(i);
 			}
 		});

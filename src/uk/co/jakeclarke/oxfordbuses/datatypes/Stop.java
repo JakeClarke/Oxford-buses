@@ -111,4 +111,10 @@ public class Stop
 		md.setY(Maps.getM().get(this.parentMap).getY() - relY * 2.1987468516915558);
 		return md;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return this.stopName + "\n- " + this.naptanCode + "\n- direction: " + this.getDirection();
+	}
 }

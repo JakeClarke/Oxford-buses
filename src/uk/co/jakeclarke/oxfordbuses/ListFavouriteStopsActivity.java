@@ -49,11 +49,10 @@ public class ListFavouriteStopsActivity extends ListActivity
 					long id)
 			{
 				// get the data cursor for the view
-				Cursor selectedItem = (Cursor)parent.getAdapter().getItem(position);
+				Stop selectedStop = (Stop)parent.getAdapter().getItem(position);
 				Toast.makeText(ListFavouriteStopsActivity.this, getString(R.string.favourite_showing_timetable), Toast.LENGTH_LONG).show();
-				String naptan = selectedItem.getString(1);
 				Intent i = new Intent(Intent.ACTION_VIEW, 
-						OxontimeUtils.getTimesUri(naptan, ListFavouriteStopsActivity.this));
+						OxontimeUtils.getTimesUri(selectedStop.getNaptanCode(), ListFavouriteStopsActivity.this));
 				ListFavouriteStopsActivity.this.startActivity(i);
 			}
 		});
