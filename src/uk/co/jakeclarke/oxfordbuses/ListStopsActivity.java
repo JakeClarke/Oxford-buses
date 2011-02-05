@@ -33,7 +33,7 @@ public class ListStopsActivity extends ListActivity {
 
 	  StopArray = new ArrayList<Stop>();
 	  updateStopsArray();
-	  setListAdapter(new ArrayAdapter<Stop>(this, R.layout.stoplistitem,StopArray));
+	  setListAdapter(new ArrayAdapter<Stop>(this, R.layout.stoplistitem, StopArray));
 	  ListView lv = getListView();
 	  lv.setTextFilterEnabled(true);
 	  
@@ -57,20 +57,20 @@ public class ListStopsActivity extends ListActivity {
 				int position, long id) {
 			final Stop selectedStop = (Stop)parent.getAdapter().getItem(position);
 			AlertDialog.Builder builder = new AlertDialog.Builder(ListStopsActivity.this);
-			builder.setTitle("Favourite stop?");
-			builder.setMessage("Would you like to add this stop to your favourites?");
+			builder.setTitle(getString(R.string.liststopsdialogs_favourite_stop));
+			builder.setMessage(getString(R.string.liststopsdialogs_add_stop_favourite));
 			builder.setCancelable(true);
-			builder.setPositiveButton("Yes", new OnClickListener(){
+			builder.setPositiveButton(getString(R.string.liststopsdialogs_yes), new OnClickListener(){
 				public void onClick(DialogInterface dialog, int which) {
 					sp.open();
 					sp.insertFavourite(selectedStop.stopName, selectedStop.naptancode);
 					sp.close();
-					Toast.makeText(ListStopsActivity.this, "Added to favourites", Toast.LENGTH_LONG).show();
+					Toast.makeText(ListStopsActivity.this, getString(R.string.liststopsdialogs_added), Toast.LENGTH_LONG).show();
 					
 				}
 				
 			});
-			builder.setNegativeButton("No", new OnClickListener() {
+			builder.setNegativeButton(getString(R.string.liststopsdialogs_no), new OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();

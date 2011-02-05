@@ -120,8 +120,8 @@ public class StopMapActivity extends MapActivity {
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View dialogLayout = factory.inflate(R.layout.naptandialog, null);
 		builder.setView(dialogLayout);
-		builder.setTitle("Manual stop lookup");
-		builder.setPositiveButton("Lookup", new OnClickListener()
+		builder.setTitle(getString(R.string.naptandialog_manual_stop_lookup));
+		builder.setPositiveButton(getString(R.string.naptandialog_lookup), new OnClickListener()
 		
 		{
 
@@ -147,7 +147,7 @@ public class StopMapActivity extends MapActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
     	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.mapmenu, menu);
+    	inflater.inflate(R.menu.stopmap_menu, menu);
     	return true;
     }
     
@@ -164,12 +164,12 @@ public class StopMapActivity extends MapActivity {
     		GeoPoint g = myLocation.getMyLocation();
     		
     		if (g != null) {
-				Toast.makeText(this, "Going to location...", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, getString(R.string.stopmap_going_to_location), Toast.LENGTH_LONG).show();
 				mc.animateTo(g);
 				mc.setZoom(16);
 			}
     		else {
-    			Toast.makeText(this, "Location not available.", Toast.LENGTH_LONG).show();
+    			Toast.makeText(this, getString(R.string.stopmap_location_not_available), Toast.LENGTH_LONG).show();
     		}
 			return true;
     	case R.id.favouritestops:
@@ -189,11 +189,10 @@ public class StopMapActivity extends MapActivity {
     private void promptBuildDB()
     {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setTitle("Database refresh required");
-    	builder.setMessage("This is the first time this app has been run and will need to build the stop database. \n" +
-    			"This will take a couple of minutes on a mobile connection. This only needs to take place once.");
+    	builder.setTitle(getString(R.string.stopmapdialogs_database_refresh_required));
+    	builder.setMessage(getString(R.string.stopmapdialogs_first_launch_message));
     	builder.setCancelable(false);
-    	builder.setPositiveButton("Build now", new OnClickListener()
+    	builder.setPositiveButton(getString(R.string.stopmapdialogs_build_now), new OnClickListener()
     	{
 
 			@Override
@@ -205,7 +204,7 @@ public class StopMapActivity extends MapActivity {
     		
     	});
     	
-    	builder.setNegativeButton("Build later", new OnClickListener()
+    	builder.setNegativeButton(getString(R.string.stopmapdialogs_build_later), new OnClickListener()
     	{
 
 			@Override

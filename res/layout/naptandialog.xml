@@ -3,6 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
-<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="Enter the naptan code that you want to know bus times for. (these are the 8 digits codes that are on each stop)" android:layout_width="fill_parent"></TextView>
-<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@+id/TextView01" android:id="@+id/NaptanEditText" android:numeric="integer" android:hint="Naptan Code"></EditText>
+
+	<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="@string/naptandialog_enter_naptan_code" android:layout_width="fill_parent"></TextView>
+	<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@+id/TextView01" android:id="@+id/NaptanEditText" android:numeric="integer" android:hint="@string/naptandialog_naptan_code"></EditText>
 </RelativeLayout>

@@ -18,7 +18,7 @@
     
     </PreferenceCategory>
     
-    <PreferenceCategory android:title="settings_times">
+    <PreferenceCategory android:title="@string/settings_times">
     
         <CheckBoxPreference android:title="@string/settings_oxontime_textmode_title"
                             android:summaryOn="@string/settings_oxontime_textmode_summary_on"

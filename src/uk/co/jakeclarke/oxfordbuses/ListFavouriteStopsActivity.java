@@ -38,7 +38,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		this.setTitle("Favourite stops");
+		this.setTitle(getString(R.string.favourite_title));
 		sp = new StopProvider(this);
 		sp.open();
 		Cursor c = sp.getAllFavourites();
@@ -52,7 +52,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
 					long id) {
 				// get the data cursor for the view
 				Cursor selectedItem = (Cursor)parent.getAdapter().getItem(position);
-				Toast.makeText(ListFavouriteStopsActivity.this, "Showing timetable", Toast.LENGTH_LONG).show();
+				Toast.makeText(ListFavouriteStopsActivity.this, getString(R.string.favourite_showing_timetable), Toast.LENGTH_LONG).show();
 				String naptan = selectedItem.getString(1);
 				Intent i = new Intent(Intent.ACTION_VIEW, 
 						OxontimeUtils.getTimesUri(naptan, ListFavouriteStopsActivity.this));
@@ -69,21 +69,21 @@ public class ListFavouriteStopsActivity extends ListActivity {
 				Cursor selectedItem = (Cursor)parent.getAdapter().getItem(pos);
 				final String stopName = selectedItem.getString(2), stopNaptan = selectedItem.getString(1);
 				AlertDialog.Builder builder = new AlertDialog.Builder(ListFavouriteStopsActivity.this);
-				builder.setTitle("Remove stop?");
-				builder.setMessage("Would you like to remove the stop, " + stopName + ", from your favourites?");
+				builder.setTitle(getString(R.string.favouritedialogs_remove_stop));
+				builder.setMessage(getString(R.string.favouritedialogs_remove_stop_from_favourite, stopName));
 				builder.setCancelable(true);
-				builder.setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener() {
+				builder.setPositiveButton(getString(R.string.favouritedialogs_yes), new android.content.DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						StopProvider sp = new StopProvider(ListFavouriteStopsActivity.this);
 						sp.open();
 						sp.deleteFavourite(stopNaptan);
 						sp.close();
-						Toast.makeText(ListFavouriteStopsActivity.this, "Removed from favourites: " + stopName, Toast.LENGTH_LONG).show();
+						Toast.makeText(ListFavouriteStopsActivity.this, getString(R.string.favouritedialogs_removed, stopName), Toast.LENGTH_LONG).show();
 						ListFavouriteStopsActivity.this.adapter.getCursor().requery();
 					}
 					
 				});
-				builder.setNegativeButton("No", new android.content.DialogInterface.OnClickListener() {
+				builder.setNegativeButton(getString(R.string.favouritedialogs_no), new android.content.DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						
@@ -102,7 +102,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
     	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.favouritesmenu, menu);
+    	inflater.inflate(R.menu.listfavouritestops_menu, menu);
     	return true;
     }
     
@@ -117,7 +117,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
     		final EditText favstopName = (EditText)layout.findViewById(R.id.favstopname);
     		
     		builder.setView(layout);
-    		builder.setPositiveButton("Add stop",  new android.content.DialogInterface.OnClickListener() {
+    		builder.setPositiveButton(getString(R.string.favouritedialogs_add_stop),  new android.content.DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {

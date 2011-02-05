@@ -2,6 +2,7 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:padding="3px">
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/favstopname" android:text="FavStopName" android:textSize="17px"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/favstopnaptan" android:text="naptan"></TextView>
+
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/favstopname" android:text="@string/favouritestop_favstopname" android:textSize="17px"></TextView>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/favstopnaptan" android:text="@string/favouritestop_naptan"></TextView>
 </LinearLayout>

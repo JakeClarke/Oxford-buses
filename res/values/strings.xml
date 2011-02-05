@@ -3,18 +3,77 @@
     <string name="hello">Hello World, Menu!</string>
     <string name="app_name">Oxford buses</string>
     
-    <string name="settings_map">Buses map</string>
+    <!-- Start StopMapActivity Labels -->
+    <string name="stopmap_going_to_location">Going to location...</string>
+    <string name="stopmap_location_not_available">Location not available.</string>
+    <string name="stopmap_menu_settings">Settings</string>
+    <string name="stopmap_menu_list_stops">List Stops</string>
+    <string name="stopmap_menu_list">List</string>
+    <string name="stopmap_menu_my_location">My Location</string>
+    <string name="stopmap_menu_favourite">Favourite</string>
+    <string name="stopmap_menu_favs">Favs</string>
+    <!-- End StopMapActivity Labels -->
     
+    <!-- Start ListFavouriteStopsActivity Labels -->
+    <string name="favourite_title">Favourite stops</string>
+    <string name="favourite_showing_timetable"></string>
+    <string name="favourite_menu_add_stop">Add Stop</string>
+    <string name="favourite_menu_add">Add</string>
+    <!-- End ListFavouriteStopsActivity Labels -->
+    
+    <!-- Start SettingsActivity Labels -->
+    <string name="settings_map">Buses map</string>
     <string name="settings_reload_title">Reload buses</string>
     <string name="settings_reload_summary">Fetch all buses stops from Internet</string>
-    
     <string name="settings_satellite_title">Use satellite view?</string>
     <string name="settings_satellite_summary_on">Currently using satellite view</string>
     <string name="settings_satellite_summary_off">Currently using map view</string>
-    
     <string name="settings_times">Buses times</string>
-    
     <string name="settings_oxontime_textmode_title">Use text mode for times?</string>
     <string name="settings_oxontime_textmode_summary_on">Current is text mode</string>
     <string name="settings_oxontime_textmode_summary_off">Current is plain view mode</string>
+    <!-- End SettingsActivity Labels -->
+    
+    <!-- Start Adapters Labels -->
+    <string name="favouritestop_favstopname">FavStopName</string>
+    <string name="favouritestop_naptan">naptan</string>
+    <!-- End Adapters Labels -->
+    
+    <!-- Start Dialogs Labels -->
+    <string name="addfavouritedialog_enter_stop_name">Please enter a stop name:</string>
+    <string name="addfavouritedialog_stop_name">Stop name</string>
+    <string name="addfavouritedialog_enter_stop_number">Please enter a stop number (naptan):</string>
+    <string name="addfavouritedialog_stop_number">Stop number</string>
+
+	<string name="naptandialog_manual_stop_lookup">Manual stop lookup</string>
+	<string name="naptandialog_lookup">Lookup</string>
+    <string name="naptandialog_enter_naptan_code">Enter the naptan code that you want to know bus times for. (these are the 8 digits codes that are on each stop)</string>
+    <string name="naptandialog_naptan_code">Naptan Code</string>
+
+    <string name="getstopsdialogs_saving_stops">Saving stops...</string>
+    <string name="getstopsdialogs_getting_stops">Getting stops...</string>
+    <string name="getstopsdialogs_notifystops_number">Number of stops: %1$d</string>
+    <string name="getstopsdialogs_notifystops_ok">Ok</string>
+    
+    <string name="favouritedialogs_remove_stop">Remove stop?</string>
+    <string name="favouritedialogs_remove_stop_from_favourite">Would you like to remove the stop %1$s from your favourites?</string>
+    <string name="favouritedialogs_yes">Yes</string>
+    <string name="favouritedialogs_no">No</string>
+    <string name="favouritedialogs_removed">Removed from favourites: %1$d</string>
+    <string name="favouritedialogs_add_stop">Add Stop</string>
+    
+    <string name="liststopsdialogs_favourite_stop">Favourite stop ?</string>
+    <string name="liststopsdialogs_add_stop_favourite">Would you like to add this stop to your favourites?</string>
+    <string name="liststopsdialogs_yes">Yes</string>
+    <string name="liststopsdialogs_no">No</string>
+    <string name="liststopsdialogs_added">Added to favourites</string>
+    
+    <string name="stopmapdialogs_database_refresh_required">Database refresh required</string>
+    <string name="stopmapdialogs_first_launch_message">This is the first time this app has been run and will need to build the stop database. \nThis will take a couple of minutes on a mobile connection. This only needs to take place once.</string>
+    <string name="stopmapdialogs_build_now">Build now</string>
+    <string name="stopmapdialogs_build_later">Build later</string>
+    
+    <string name="stopitemizedoverlay_dialogs_pick_stop">Pick a stop</string>
+    <string name="stopitemizedoverlay_dialogs_close">Close</string>
+    <!-- End Dialogs Labels -->
 </resources>

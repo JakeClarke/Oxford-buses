@@ -38,7 +38,7 @@ public class GetStopsActivity extends Activity {
 		{
 			ProgressDialog progressDialog = new ProgressDialog(GetStopsActivity.this);
 	        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	        progressDialog.setMessage("Saving stops...");
+	        progressDialog.setMessage(getString(R.string.getstopsdialogs_saving_stops));
 	        progressDialog.show();
 	        
 		}
@@ -54,7 +54,7 @@ public class GetStopsActivity extends Activity {
         progressDialog = new ProgressDialog(GetStopsActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMax(md.size());
-        progressDialog.setMessage("Getting stops...");
+        progressDialog.setMessage(getString(R.string.getstopsdialogs_getting_stops));
         progressDialog.setCancelable(false);
         sp = new StopProvider(this);
         progressDialog.show();
@@ -90,9 +90,9 @@ public class GetStopsActivity extends Activity {
     public void notifyStops(int stops)
     {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Number of stops: " + stops);
+    	builder.setMessage(getString(R.string.getstopsdialogs_notifystops_number,  stops));
     	builder.setCancelable(false);
-    	builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    	builder.setPositiveButton(getString(R.string.getstopsdialogs_notifystops_ok), new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int id) {
         	   GetStopsActivity.this.finish();
         	   Intent i = new Intent(GetStopsActivity.this, StopMapActivity.class);

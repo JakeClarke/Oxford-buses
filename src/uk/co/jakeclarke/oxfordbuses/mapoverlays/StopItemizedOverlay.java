@@ -2,8 +2,7 @@ package uk.co.jakeclarke.oxfordbuses.mapoverlays;
 
 import java.util.ArrayList;
 
-import uk.co.jakeclarke.oxfordbuses.ListStopsActivity;
-import uk.co.jakeclarke.oxfordbuses.Maps;
+import uk.co.jakeclarke.oxfordbuses.R;
 import uk.co.jakeclarke.oxfordbuses.StopProvider;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
@@ -122,15 +121,14 @@ public class StopItemizedOverlay extends ItemizedOverlay {
 
 		Stop item = stopArray.get(index);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(c);
-		dialog.setTitle("Pick a stop");
-		dialog.setNegativeButton("Close", new OnClickListener()
+		dialog.setTitle(c.getString(R.string.stopitemizedoverlay_dialogs_pick_stop));
+		dialog.setNegativeButton(c.getString(R.string.stopitemizedoverlay_dialogs_close), new OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-		//dialog.setMessage("BlahBlah");
 		dialog.setItems(stopsSting, new OnClickListener()
 		{
 
