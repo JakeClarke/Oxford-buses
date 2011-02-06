@@ -11,6 +11,7 @@
 		<activity android:name="GetStopsActivity"></activity>
 		<activity android:label="@string/app_name"
 			android:name="StopMapActivity"
+			android:configChanges="orientation|keyboard"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
