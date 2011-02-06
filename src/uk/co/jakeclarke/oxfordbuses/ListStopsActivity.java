@@ -4,84 +4,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
+import uk.co.jakeclarke.oxfordbuses.handlers.ListStopsListener;
 import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
-import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
+import uk.co.jakeclarke.oxfordbuses.utils.Constants;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 public class ListStopsActivity extends ListActivity
 {
-	List<Stop> stopArray;
-	StopProvider sp;
+	private List<Stop> stopArray;
+	private StopProvider sp;
+	private ListStopsListener listener;
+	private ListView listView;
+	private Stop selectedStop;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
+		listener = new ListStopsListener(this);
+		
 		updateStopsArray();
 		setListAdapter(new ArrayAdapter<Stop>(this, R.layout.stoplistitem, stopArray));
-		ListView lv = getListView();
-		lv.setTextFilterEnabled(true);
+		listView = getListView();
+		listView.setTextFilterEnabled(true);
 
-		lv.setOnItemClickListener(new OnItemClickListener()
-		{
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id)
-			{
-				// When clicked, show a toast with the TextView text
-				Stop selectedStop = (Stop)parent.getAdapter().getItem(position);
-				final String stopName = selectedStop.getStopName(), stopNaptan = selectedStop.getNaptanCode();
-				Toast.makeText(getApplicationContext(), stopName, Toast.LENGTH_SHORT).show();
-				Intent i = new Intent(Intent.ACTION_VIEW, 
-						OxontimeUtils.getTimesUri(stopNaptan, ListStopsActivity.this));
-				startActivity(i);
-			}
-		});
+		listView.setOnItemClickListener(listener);
 
-		lv.setOnItemLongClickListener(new OnItemLongClickListener()
-		{
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View v,
-					int position, long id)
-			{
-				final Stop selectedStop = (Stop)parent.getAdapter().getItem(position);
-				AlertDialog.Builder builder = new AlertDialog.Builder(ListStopsActivity.this);
-				builder.setTitle(getString(R.string.liststopsdialogs_favourite_stop));
-				builder.setMessage(getString(R.string.liststopsdialogs_add_stop_favourite));
-				builder.setCancelable(true);
-				builder.setPositiveButton(getString(R.string.liststopsdialogs_yes), new OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
-					{
-						sp.insertFavourite(selectedStop.getStopName(), selectedStop.getNaptanCode());
-						Toast.makeText(ListStopsActivity.this, getString(R.string.liststopsdialogs_added), Toast.LENGTH_LONG).show();
-					}
-				});
-				builder.setNegativeButton(getString(R.string.liststopsdialogs_no), new OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
-					{
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
-
-				return true;
-			}
-		});
+		listView.setOnItemLongClickListener(listener);
 	}
+	
+    @Override
+    protected Dialog onCreateDialog(int id)
+    {
+        switch (id)
+        {
+        	// Set the appropriated options
+	        case Constants.LISTSTOP_DIALOG:
+	    		return new AlertDialog.Builder(this)
+	    			.setTitle(getString(R.string.liststopsdialogs_favourite_stop))
+	    			.setMessage(getString(R.string.liststopsdialogs_add_stop_favourite))
+	    			.setCancelable(true)
+    				.setPositiveButton(getString(R.string.liststopsdialogs_yes), listener)
+	    			.setNegativeButton(getString(R.string.liststopsdialogs_no), listener)
+	    			.create();
+        }
+        return null;
+    }
 
 	private void updateStopsArray()
 	{
@@ -93,5 +67,20 @@ public class ListStopsActivity extends ListActivity
 		sp = new StopProvider(this);
 		// generate the array
 		stopArray = sp.getAllStops();
+	}
+
+	public StopProvider getSp()
+	{
+		return sp;
+	}
+
+	public Stop getSelectedStop()
+	{
+		return selectedStop;
+	}
+
+	public void setSelectedStop(Stop selectedStop)
+	{
+		this.selectedStop = selectedStop;
 	}
 }

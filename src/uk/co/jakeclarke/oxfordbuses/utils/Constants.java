@@ -24,4 +24,13 @@ public class Constants
 	public static final String SCRAP_STOP_NAMES = "stop-names";
 	public static final String SCRAP_STOP_BEARINGS = "stop-bearings";
 	public static final String SCRAP_COUNT = "count";
+	
+	public static final int STOPMAP_DIALOG_SEARCH = 0;
+	public static final int STOPMAP_DIALOG_PROMPT = 1;
+	public static final int STOPMAP_DIALOG_TAP = 2;
+	
+	public static final int LISTSTOP_DIALOG = 0;
+	
+	public static final int LISTFAVOURITESTOP_FAVOURITE = 0;
+	public static final int LISTFAVOURITESTOP_OPTION = 1;
 }

@@ -5,14 +5,16 @@ package uk.co.jakeclarke.oxfordbuses;
 
 import java.util.List;
 
+import uk.co.jakeclarke.oxfordbuses.adapters.RegularStopAdapter;
+import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
+import uk.co.jakeclarke.oxfordbuses.handlers.StopMapListener;
 import uk.co.jakeclarke.oxfordbuses.mapoverlays.StopItemizedOverlay;
 import uk.co.jakeclarke.oxfordbuses.providers.Maps;
-import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
+import uk.co.jakeclarke.oxfordbuses.utils.Constants;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -37,11 +38,11 @@ import com.google.android.maps.Overlay;
  */
 public class StopMapActivity extends MapActivity
 {
-	MapController mc;
-	MyLocationOverlay myLocation;
-	MapView mapView;
-
+	private MapController mc;
+	private MyLocationOverlay myLocation;
+	private MapView mapView;
 	private SharedPreferences prefs;
+	private List<Stop> currentNodeStops;
 
 	/* (non-Javadoc)
 	 * @see com.google.android.maps.MapActivity#isRouteDisplayed()
@@ -78,7 +79,7 @@ public class StopMapActivity extends MapActivity
 		// add the stops to the map
 		List<Overlay> mapOverlays = mapView.getOverlays();
 		Drawable stopIcon = this.getResources().getDrawable(R.drawable.stopicon);
-		StopItemizedOverlay stopOverlay = new StopItemizedOverlay(stopIcon, StopMapActivity.this);
+		StopItemizedOverlay stopOverlay = new StopItemizedOverlay(stopIcon, this);
 
 		mapOverlays.add(stopOverlay);
 		mapOverlays.add(myLocation);
@@ -115,31 +116,58 @@ public class StopMapActivity extends MapActivity
 		myLocation.disableMyLocation();
 		super.onStop();
 	}
-
-	private void search()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		LayoutInflater factory = LayoutInflater.from(this);
-		final View dialogLayout = factory.inflate(R.layout.naptandialog, null);
-		builder.setView(dialogLayout);
-		builder.setTitle(getString(R.string.naptandialog_manual_stop_lookup));
-		builder.setPositiveButton(getString(R.string.naptandialog_lookup), new OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface d, int which) {
-				EditText naptanEt = (EditText)dialogLayout.findViewById(R.id.NaptanEditText);
-				Intent i = new Intent(Intent.ACTION_VIEW, 
-						OxontimeUtils.getTimesUri(naptanEt.getText().toString(), StopMapActivity.this));
-				StopMapActivity.this.startActivity(i);
-			}
-		});
-		builder.create().show();
-	}
+	
+    @Override
+    protected Dialog onCreateDialog(int id)
+    {
+        StopMapListener listener = new StopMapListener(this, id);
+        switch (id)
+        {
+        	// Set the appropriated options
+	        case Constants.STOPMAP_DIALOG_SEARCH:
+	    		LayoutInflater factory = LayoutInflater.from(this);
+	    		final View dialogLayout = factory.inflate(R.layout.naptandialog, null);
+	            
+	    		return new AlertDialog.Builder(this)
+	    			.setView(dialogLayout)
+	    			.setTitle(getString(R.string.naptandialog_manual_stop_lookup))
+	    			.setPositiveButton(getString(R.string.naptandialog_lookup), listener)
+		    		.create();
+	    		
+	        case Constants.STOPMAP_DIALOG_PROMPT:
+	    		return new AlertDialog.Builder(this)
+	    			.setTitle(getString(R.string.stopmapdialogs_database_refresh_required))
+	    			.setMessage(getString(R.string.stopmapdialogs_first_launch_message))
+	    			.setCancelable(false)
+	    			.setPositiveButton(getString(R.string.stopmapdialogs_build_now), listener)
+		    		.setNegativeButton(getString(R.string.stopmapdialogs_build_later), listener)
+		    		.create();
+	    		
+	        case Constants.STOPMAP_DIALOG_TAP:
+	    		return new AlertDialog.Builder(this)
+	    			.setTitle(getString(R.string.stopitemizedoverlay_dialogs_pick_stop))
+	    			.setNegativeButton(getString(R.string.stopitemizedoverlay_dialogs_close), listener)
+		    		.setAdapter(new RegularStopAdapter(this, currentNodeStops), listener)
+		    		.create();
+        }
+        return null;
+    }
+    
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog)
+    {
+    	switch (id)
+    	{
+			case Constants.STOPMAP_DIALOG_TAP:
+				((AlertDialog)dialog).getListView().setAdapter(new RegularStopAdapter(this, currentNodeStops));
+				break;
+		}
+    }
 
 	@Override
 	public boolean onSearchRequested()
 	{
-		search();
+		this.showDialog(Constants.STOPMAP_DIALOG_SEARCH);
 		return true;
 	}
 
@@ -157,64 +185,47 @@ public class StopMapActivity extends MapActivity
 		Intent i = null;
 		switch(item.getItemId())
 		{
-		case R.id.listbutton:
-			i = new Intent(StopMapActivity.this, ListStopsActivity.class);
-			startActivity(i);
-			return true;
-
-		case R.id.mylocation:
-			GeoPoint g = myLocation.getMyLocation();
-			if (g != null)
-			{
-				Toast.makeText(this, getString(R.string.stopmap_going_to_location), Toast.LENGTH_LONG).show();
-				mc.animateTo(g);
-				mc.setZoom(16);
-			}
-			else
-			{
-				Toast.makeText(this, getString(R.string.stopmap_location_not_available), Toast.LENGTH_LONG).show();
-			}
-			return true;
-
-		case R.id.favouritestops:
-			i = new Intent(this, ListFavouriteStopsActivity.class);
-			this.startActivity(i);
-			return true;
-
-		case R.id.menu_settings:
-			i = new Intent(this, SettingsActivity.class);
-			startActivity(i);
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.listbutton:
+				i = new Intent(this, ListStopsActivity.class);
+				startActivity(i);
+				return true;
+	
+			case R.id.mylocation:
+				GeoPoint g = myLocation.getMyLocation();
+				if (g != null)
+				{
+					Toast.makeText(this, getString(R.string.stopmap_going_to_location), Toast.LENGTH_LONG).show();
+					mc.animateTo(g);
+					mc.setZoom(16);
+				}
+				else
+				{
+					Toast.makeText(this, getString(R.string.stopmap_location_not_available), Toast.LENGTH_LONG).show();
+				}
+				return true;
+	
+			case R.id.favouritestops:
+				i = new Intent(this, ListFavouriteStopsActivity.class);
+				this.startActivity(i);
+				return true;
+	
+			case R.id.menu_settings:
+				i = new Intent(this, SettingsActivity.class);
+				startActivity(i);
+				return true;
+	
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
 	private void promptBuildDB()
 	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.stopmapdialogs_database_refresh_required));
-		builder.setMessage(getString(R.string.stopmapdialogs_first_launch_message));
-		builder.setCancelable(false);
-		builder.setPositiveButton(getString(R.string.stopmapdialogs_build_now), new OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				Intent i = new Intent(StopMapActivity.this, GetStopsActivity.class);
-				startActivity(i);
-				StopMapActivity.this.finish();
-			}
-		});
-		builder.setNegativeButton(getString(R.string.stopmapdialogs_build_later), new OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				StopMapActivity.this.finish();
-			}
-		});
-		builder.create().show();
+		this.showDialog(Constants.STOPMAP_DIALOG_PROMPT);
+	}
+
+	public void setCurrentNodeStops(List<Stop> currentNodeStops)
+	{
+		this.currentNodeStops = currentNodeStops;
 	}
 }

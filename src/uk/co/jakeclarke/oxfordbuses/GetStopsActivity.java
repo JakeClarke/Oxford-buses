@@ -6,13 +6,12 @@ import java.util.Map;
 
 import uk.co.jakeclarke.oxfordbuses.datatypes.MapCoordsData;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
+import uk.co.jakeclarke.oxfordbuses.handlers.GetStopsListener;
 import uk.co.jakeclarke.oxfordbuses.providers.Maps;
 import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,12 +23,15 @@ public class GetStopsActivity extends Activity
 	private Map<Integer, MapCoordsData> md;
 	private List<Stop> stops = new ArrayList<Stop>();
 	private StopProvider sp;
+	private GetStopsListener listener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		Maps.parseMaps(GetStopsActivity.this.getAssets());
+		
+		listener = new GetStopsListener(this);
 
 		md = Maps.getM();
 		sp = new StopProvider(this);
@@ -80,15 +82,7 @@ public class GetStopsActivity extends Activity
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(getString(R.string.getstopsdialogs_notifystops_number,  stops));
 		builder.setCancelable(false);
-		builder.setPositiveButton(getString(R.string.getstopsdialogs_notifystops_ok), new DialogInterface.OnClickListener()
-		{
-			public void onClick(DialogInterface dialog, int id)
-			{
-				GetStopsActivity.this.finish();
-				Intent i = new Intent(GetStopsActivity.this, StopMapActivity.class);
-				GetStopsActivity.this.startActivity(i);
-			}
-		});
+		builder.setPositiveButton(getString(R.string.getstopsdialogs_notifystops_ok), listener);
 		AlertDialog alert = builder.create();
 		alert.show();
 	}

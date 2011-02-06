@@ -29,7 +29,7 @@ public class RegularStopAdapter extends BaseAdapter
 		return elements.size();
 	}
 
-	public Object getItem(int position)
+	public Stop getItem(int position)
 	{
 		return elements.get(position);
 	}

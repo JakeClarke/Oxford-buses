@@ -3,18 +3,12 @@ package uk.co.jakeclarke.oxfordbuses.mapoverlays;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.jakeclarke.oxfordbuses.R;
-import uk.co.jakeclarke.oxfordbuses.adapters.RegularStopAdapter;
+import uk.co.jakeclarke.oxfordbuses.StopMapActivity;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
-import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
+import uk.co.jakeclarke.oxfordbuses.utils.Constants;
 import uk.me.jstott.jcoord.LatLng;
 import uk.me.jstott.jcoord.OSRef;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.GeoPoint;
@@ -23,16 +17,15 @@ import com.google.android.maps.OverlayItem;
 
 public class StopItemizedOverlay extends ItemizedOverlay
 {
-	StopProvider sp;
-	Context c;
-	List<Stop> currentNodeStops;
-	List<Stop> stopArray;
-	List<StopMapNode> mapNodes;
+	private StopProvider sp;
+	private StopMapActivity context;
+	private List<Stop> stopArray;
+	private List<StopMapNode> mapNodes;
 
-	public StopItemizedOverlay(Drawable defaultMarker, Context c)
+	public StopItemizedOverlay(Drawable defaultMarker, StopMapActivity c)
 	{
 		super(boundCenterBottom(defaultMarker));
-		this.c = c;
+		this.context = c;
 		sp = new StopProvider(c);
 
 		// get stops from the db;
@@ -86,30 +79,8 @@ public class StopItemizedOverlay extends ItemizedOverlay
 	@Override
 	protected boolean onTap(final int index)
 	{
-		currentNodeStops = mapNodes.get(index).getChildStops();
-
-		AlertDialog.Builder dialog = new AlertDialog.Builder(c);
-		dialog.setTitle(c.getString(R.string.stopitemizedoverlay_dialogs_pick_stop));
-		dialog.setNegativeButton(c.getString(R.string.stopitemizedoverlay_dialogs_close), new OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-			}
-		});
-		dialog.setAdapter(new RegularStopAdapter(c, currentNodeStops), new OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				String naptan = currentNodeStops.get(which).getNaptanCode();
-				Intent i = new Intent(Intent.ACTION_VIEW, 
-						OxontimeUtils.getTimesUri(naptan, c));
-				StopItemizedOverlay.this.c.startActivity(i);
-			}
-		});
-		dialog.show();
+		context.setCurrentNodeStops(mapNodes.get(index).getChildStops());
+		context.showDialog(Constants.STOPMAP_DIALOG_TAP);
 		return true;
 	}
 }
