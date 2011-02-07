@@ -1,16 +1,9 @@
 package uk.co.jakeclarke.oxfordbuses;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import uk.co.jakeclarke.oxfordbuses.adapters.FavouriteStopAdapter;
-import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.handlers.ListFavouriteStopsListener;
-import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
 import uk.co.jakeclarke.oxfordbuses.utils.Constants;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,12 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class ListFavouriteStopsActivity extends ListActivity
+/**
+ * Activity listing the favourite bus stops stored in the database
+ *
+ */
+public class ListFavouriteStopsActivity extends MotherListActivity
 {
-	private List<Stop> stopArray;
-	private StopProvider sp;
 	private ListFavouriteStopsListener listener;
-	private Stop selectedStop;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -36,10 +30,14 @@ public class ListFavouriteStopsActivity extends ListActivity
 		
 		listener = new ListFavouriteStopsListener(this);
 
-		updateStopsArray();
-		ListView lv = this.getListView();
-		lv.setOnItemClickListener(listener);
-		lv.setOnItemLongClickListener(listener);
+		// Populate the list of Stops
+		updateStopsArray(GET_FAVOURITE_STOPS);
+		
+		ListView listView = this.getListView();
+
+		// Add action listeners
+		listView.setOnItemClickListener(listener);
+		listView.setOnItemLongClickListener(listener);
 	}
 
 	@Override
@@ -67,10 +65,15 @@ public class ListFavouriteStopsActivity extends ListActivity
     @Override
     protected Dialog onCreateDialog(int id)
     {
+    	// Instanciante a new listener to handle user actions on the ListFavouriteStopsActivity
+    	// The type of the listener to handle dialogs actions depend on the dialog Id
         ListFavouriteStopsListener listener = new ListFavouriteStopsListener(this, id);
+
+        // Create a different dialog depending of the action (determined by the Id given when the 'showDialog' was being called)
         switch (id)
         {
-        	// Set the appropriated options
+    		// Display the dialog dedicated to ask the user if he wants to remove this bus Stop
+        	// fro his favourites
 	        case Constants.LISTFAVOURITESTOP_FAVOURITE:
 	    		return new AlertDialog.Builder(this)
 	    			.setTitle(getString(R.string.favouritedialogs_remove_stop))
@@ -80,6 +83,7 @@ public class ListFavouriteStopsActivity extends ListActivity
 	    			.setNegativeButton(getString(R.string.favouritedialogs_no), listener)
 	    			.create();
 
+        	// Display the dialog dedicated to create a new favourite bus Stop
 	        case Constants.LISTFAVOURITESTOP_OPTION:
 				LayoutInflater inflater = this.getLayoutInflater();
 				View layout = inflater.inflate(R.layout.addfavouritedialog, (ViewGroup) findViewById(R.id.layout_root));
@@ -90,32 +94,4 @@ public class ListFavouriteStopsActivity extends ListActivity
         }
         return null;
     }
-
-	public void updateStopsArray()
-	{
-		if(stopArray == null)
-		{
-			stopArray = new ArrayList<Stop>();
-		}
-		stopArray.clear();
-		sp = new StopProvider(this);
-		// generate the array
-		stopArray = sp.getAllFavourites();
-		setListAdapter(new FavouriteStopAdapter(this, stopArray));
-	}
-
-	public Stop getSelectedStop()
-	{
-		return selectedStop;
-	}
-
-	public void setSelectedStop(Stop selectedStop)
-	{
-		this.selectedStop = selectedStop;
-	}
-
-	public StopProvider getSp()
-	{
-		return sp;
-	}
 }

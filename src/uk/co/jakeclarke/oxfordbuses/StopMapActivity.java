@@ -33,7 +33,7 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
 /**
- * @author Jake
+ * MAIN Activity displaying Bus Stops on a Google Map
  *
  */
 public class StopMapActivity extends MapActivity
@@ -42,6 +42,8 @@ public class StopMapActivity extends MapActivity
 	private MyLocationOverlay myLocation;
 	private MapView mapView;
 	private SharedPreferences prefs;
+	
+	// Node, list of stops being selected by a Tap on the Map
 	private List<Stop> currentNodeStops;
 
 	/* (non-Javadoc)
@@ -84,6 +86,7 @@ public class StopMapActivity extends MapActivity
 		mapOverlays.add(stopOverlay);
 		mapOverlays.add(myLocation);
 
+		// If there is no stop on the Map, prompt the user to build it and populate the databse
 		if (stopOverlay.size() == 0)
 		{
 			promptBuildDB();
@@ -120,10 +123,14 @@ public class StopMapActivity extends MapActivity
     @Override
     protected Dialog onCreateDialog(int id)
     {
+    	// Instanciante a new listener to handle user actions on the StopMapActivity
+    	// The type of the listener to handle dialogs actions depend on the dialog Id
         StopMapListener listener = new StopMapListener(this, id);
+        
+        // Create a different dialog depending of the action (determined by the Id given when the 'showDialog' was being called)
         switch (id)
         {
-        	// Set the appropriated options
+        	// Display the dialog dedicated for Search action
 	        case Constants.STOPMAP_DIALOG_SEARCH:
 	    		LayoutInflater factory = LayoutInflater.from(this);
 	    		final View dialogLayout = factory.inflate(R.layout.naptandialog, null);
@@ -133,7 +140,8 @@ public class StopMapActivity extends MapActivity
 	    			.setTitle(getString(R.string.naptandialog_manual_stop_lookup))
 	    			.setPositiveButton(getString(R.string.naptandialog_lookup), listener)
 		    		.create();
-	    		
+
+        	// Display the dialog dedicated to ask the user if he wants to build the database
 	        case Constants.STOPMAP_DIALOG_PROMPT:
 	    		return new AlertDialog.Builder(this)
 	    			.setTitle(getString(R.string.stopmapdialogs_database_refresh_required))
@@ -142,7 +150,8 @@ public class StopMapActivity extends MapActivity
 	    			.setPositiveButton(getString(R.string.stopmapdialogs_build_now), listener)
 		    		.setNegativeButton(getString(R.string.stopmapdialogs_build_later), listener)
 		    		.create();
-	    		
+
+        	// Display the dialog dedicated for a Tap on a bus sotp Node
 	        case Constants.STOPMAP_DIALOG_TAP:
 	    		return new AlertDialog.Builder(this)
 	    			.setTitle(getString(R.string.stopitemizedoverlay_dialogs_pick_stop))
@@ -158,6 +167,7 @@ public class StopMapActivity extends MapActivity
     {
     	switch (id)
     	{
+    		// Re-populate the dialog with the list of stop of the "Tapped" bus stop Node
 			case Constants.STOPMAP_DIALOG_TAP:
 				((AlertDialog)dialog).getListView().setAdapter(new RegularStopAdapter(this, currentNodeStops));
 				break;
@@ -167,6 +177,7 @@ public class StopMapActivity extends MapActivity
 	@Override
 	public boolean onSearchRequested()
 	{
+		// Show the Search dialog
 		this.showDialog(Constants.STOPMAP_DIALOG_SEARCH);
 		return true;
 	}
@@ -219,11 +230,21 @@ public class StopMapActivity extends MapActivity
 		}
 	}
 
+
+	/**
+	 * Prompt the user to build the bus stop database and populate the databse
+	 * 
+	 */
 	private void promptBuildDB()
 	{
 		this.showDialog(Constants.STOPMAP_DIALOG_PROMPT);
 	}
 
+	/**
+	 * Set the selected bus stop Node.
+	 * 
+	 * @param List<Stop> currentNodeStops
+	 */
 	public void setCurrentNodeStops(List<Stop> currentNodeStops)
 	{
 		this.currentNodeStops = currentNodeStops;

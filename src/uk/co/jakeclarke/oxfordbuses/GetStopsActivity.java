@@ -11,11 +11,16 @@ import uk.co.jakeclarke.oxfordbuses.providers.Maps;
 import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+/**
+ * Activity scrapping the web to retrieve bus stops and their attributes from a list of bus stop map number
+ *
+ */
 public class GetStopsActivity extends Activity
 {
 	private ProgressThread progressThread;
@@ -76,16 +81,17 @@ public class GetStopsActivity extends Activity
 			});
 		}
 	}
-
-	public void notifyStops(int stops)
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(getString(R.string.getstopsdialogs_notifystops_number,  stops));
-		builder.setCancelable(false);
-		builder.setPositiveButton(getString(R.string.getstopsdialogs_notifystops_ok), listener);
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+	
+    @Override
+    protected Dialog onCreateDialog(int id)
+    {
+		// When the database is populated, show to the user a count of all the bus stop found
+		return new AlertDialog.Builder(this)
+			.setMessage(getString(R.string.getstopsdialogs_notifystops_number,  stops.size()))
+			.setCancelable(false)
+			.setPositiveButton(getString(R.string.getstopsdialogs_notifystops_ok), listener)
+			.create();
+    }
 
 	public Map<Integer, MapCoordsData> getMd()
 	{

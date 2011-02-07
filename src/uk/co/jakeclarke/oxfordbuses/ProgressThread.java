@@ -35,11 +35,14 @@ public class ProgressThread extends Thread
 			GetStopsActivity localContext = (GetStopsActivity) context;
 			total = 0;
 
+			// For each key in the Csv file
 			for (int map : localContext.getMd().keySet())
 			{
+				// Go scrape the web and retrieve a list of Stops
 				StopScrape scraper = new StopScrape();
 				List<Stop> tempStops = scraper.getStops(map);
 
+				// For each Stop in the list, add it to the Stop list of the Activity
 				for(Stop istop : tempStops)
 				{
 					localContext.getStops().add(istop);
@@ -53,9 +56,11 @@ public class ProgressThread extends Thread
 				total++;
 			}
 
+			// Clear the database (the stops table, not the favourites)
 			StopProvider sp = localContext.getSp();
 			sp.clearStops();
 
+			// Display a ProgressDialog for the user to wait
 			mHandler.post(new Runnable()
 			{
 				public void run()
@@ -67,17 +72,19 @@ public class ProgressThread extends Thread
 				}
 			});
 			
+			// For each Stop retrieved later, save in into the database
 			for(Stop istop : localContext.getStops())
 			{
 				sp.insertStop(istop);
 			}
 
+			// When the database is populated, show to the user a count of all the bus stop found
 			mHandler.post(new Runnable()
 			{
 				public void run()
 				{
 					GetStopsActivity localContext = (GetStopsActivity) context;
-					localContext.notifyStops(localContext.getStops().size());
+					localContext.showDialog(0);
 				}
 			});
 		}

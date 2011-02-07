@@ -8,44 +8,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FavouriteStopAdapter extends BaseAdapter
+/**
+ * List item adapter (renderer) for the list of favourite bus Stops
+ *
+ */
+public class FavouriteStopAdapter extends StopAdapter
 {
-	private List<Stop> elements;
-	private Context c;
-
 	public FavouriteStopAdapter(Context c, List<Stop> stops)
 	{
-		this.elements = stops;
-		this.c = c;
+		super(c, stops);
 	}
 
-	public int getCount()
-	{
-		return elements.size();
-	}
-
-	public Object getItem(int position)
-	{
-		return elements.get(position);
-	}
-
-	public long getItemId(int id)
-	{
-		return id;
-	}
-
-	public void Remove(int id)
-	{
-		notifyDataSetChanged();
-	}
-
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-
 		LinearLayout rowLayout;
 		Stop s = elements.get(position);
 

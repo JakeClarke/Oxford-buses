@@ -12,6 +12,10 @@ import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.widget.EditText;
 
+/**
+ * Action listener of the StopMapListener activity
+ *
+ */
 public class StopMapListener implements OnClickListener
 {
 	private StopMapActivity context;
@@ -29,39 +33,55 @@ public class StopMapListener implements OnClickListener
 		Intent i = null ;
 		switch(this.type)
 		{
+			// The search form validated
 			case Constants.STOPMAP_DIALOG_SEARCH:
-				EditText naptanEt = (EditText)((AlertDialog)dialog).findViewById(R.id.NaptanEditText);
-				i = new Intent(Intent.ACTION_VIEW, 
-						OxontimeUtils.getTimesUri(naptanEt.getText().toString(), context));
+				// Retrieve the naptan code typed by the user
+				String naptanCode = ((EditText)((AlertDialog)dialog).findViewById(R.id.NaptanEditText)).getText().toString();
+				
+				// Create a new Intent and launch the application abble to read the URI built from the naptan code
+				i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(naptanCode, context));
 				context.startActivity(i);
 				break;
 
+			// The prompt asks the user to build and populate the database
 			case Constants.STOPMAP_DIALOG_PROMPT:
 				switch(which)
 				{
+					// The user's answer is Yes
 					case DialogInterface.BUTTON_POSITIVE:
+						// Create a new Intent and launch the GetStopsActivity activity
 						i = new Intent(context, GetStopsActivity.class);
 						context.startActivity(i);
+						
+						// Finish the current activity
 						context.finish();
 						break;
-		
+
+					// The user's answer is No
 					case DialogInterface.BUTTON_NEGATIVE:
+						// Just finish the current activity
 						context.finish();
 						break;
 				}
 				break;
 
+			// The user has Tapped a bus stop Node on the map
 			case Constants.STOPMAP_DIALOG_TAP:
 				switch(which)
 				{
+					// The user cancel the action
 					case DialogInterface.BUTTON_NEGATIVE:
+						// Hide the dialog
 						dialog.dismiss();
 						break;
 		
+					// The user selects a bus Stop from the list
 					default:
+						// Get the naptan code of the selected bus Stop
 						String naptan = ((RegularStopAdapter)((AlertDialog)dialog).getListView().getAdapter()).getItem(which).getNaptanCode();
-						i = new Intent(Intent.ACTION_VIEW, 
-								OxontimeUtils.getTimesUri(naptan, context));
+
+						// Create a new Intent and launch the application abble to read the URI built from the naptan code
+						i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(naptan, context));
 						context.startActivity(i);
 				}
 				break;

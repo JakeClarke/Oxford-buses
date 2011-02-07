@@ -79,7 +79,10 @@ public class StopItemizedOverlay extends ItemizedOverlay
 	@Override
 	protected boolean onTap(final int index)
 	{
+		// Push the stop list of the selected Node to the Activity in order to be user by it
 		context.setCurrentNodeStops(mapNodes.get(index).getChildStops());
+		
+		// Show the appropriate dialog in the Activity
 		context.showDialog(Constants.STOPMAP_DIALOG_TAP);
 		return true;
 	}

@@ -11,29 +11,49 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class StopProvider {
-
+/**
+ * Bus Stop DAO 
+ *
+ */
+public class StopProvider
+{
 	private SQLiteDatabase db;
 	private DatabaseHelper dbHelper;
 
 	private Context context;
 
+	/**
+	 * Constructor
+	 * @param Context ctx
+	 */
 	public StopProvider(Context ctx) 
 	{
 		this.context = ctx;
 		dbHelper = new DatabaseHelper(context);
 	}
 
+	/**
+	 * Opens a connection to the database in write mode
+	 * @throws SQLException
+	 */
 	private void open() throws SQLException 
 	{
 		db = dbHelper.getWritableDatabase();
 	}
 
+	/**
+	 * Close a connection to the database
+	 */
 	private void close()
 	{
 		dbHelper.close();
 	}
 
+	/**
+	 * Insert a new bus stop into the database
+	 * @param Stop stop
+	 * @return long the new rowId
+	 */
 	public long insertStop(Stop stop)
 	{
 		open();
@@ -48,6 +68,12 @@ public class StopProvider {
 		return rowId;
 	}
 
+	/**
+	 * Insert a new favourite bus stop into the database
+	 * @param String stopname
+	 * @param String naptancode
+	 * @return long the new rowId
+	 */
 	public long insertFavourite(String stopname, String naptancode)
 	{
 		open();
@@ -59,6 +85,11 @@ public class StopProvider {
 		return rowId;
 	}
 
+	/**
+	 * Delete a favourite bus stop from the database
+	 * @param String naptan
+	 * @return boolean
+	 */
 	public boolean deleteFavourite(String naptan)
 	{
 		open();
@@ -67,6 +98,10 @@ public class StopProvider {
 		return deleted;
 	}
 
+	/**
+	 * Delete all the bus stop from the database
+	 * @return boolean
+	 */
 	public boolean clearStops()
 	{
 		open();
@@ -75,6 +110,10 @@ public class StopProvider {
 		return deleted;
 	}
 
+	/**
+	 * Delete all the favourite bus stop from the database
+	 * @return boolean
+	 */
 	public boolean clearFavourites()
 	{
 		open();
@@ -83,6 +122,10 @@ public class StopProvider {
 		return deleted;
 	}
 
+	/**
+	 * Retrieve all the bus stop from the database
+	 * @return List<Stop>
+	 */
 	public List<Stop> getAllStops()
 	{
 		open();
@@ -114,6 +157,10 @@ public class StopProvider {
 		return stops;
 	}
 
+	/**
+	 * Retrieve all the favourite bus stop from the database
+	 * @return List<Stop>
+	 */
 	public List<Stop> getAllFavourites()
 	{
 		open();
