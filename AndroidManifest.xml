@@ -20,10 +20,17 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="ListStopsActivity"
-			android:configChanges="orientation|keyboard"></activity>
+			android:configChanges="orientation|keyboard"
+			android:label="@string/stops_title">
+		</activity>
 		<activity android:name="ListFavouriteStopsActivity"
-			android:configChanges="orientation|keyboard"></activity>
-		<activity android:name="SettingsActivity"></activity>
+			android:configChanges="orientation|keyboard"
+			android:label="@string/favourite_title">
+		</activity>
+		<activity android:name="SettingsActivity"
+			android:label="@string/settings_title">
+		</activity>
+		<activity android:name="ListTimesActivity"></activity>
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>

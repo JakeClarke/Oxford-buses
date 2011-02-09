@@ -26,7 +26,6 @@ public class ListFavouriteStopsActivity extends MotherListActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		this.setTitle(getString(R.string.favourite_title));
 		
 		listener = new ListFavouriteStopsListener(this);
 

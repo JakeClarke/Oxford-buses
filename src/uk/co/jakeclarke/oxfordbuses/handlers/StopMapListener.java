@@ -1,11 +1,12 @@
 package uk.co.jakeclarke.oxfordbuses.handlers;
 
 import uk.co.jakeclarke.oxfordbuses.GetStopsActivity;
+import uk.co.jakeclarke.oxfordbuses.ListTimesActivity;
 import uk.co.jakeclarke.oxfordbuses.R;
 import uk.co.jakeclarke.oxfordbuses.StopMapActivity;
 import uk.co.jakeclarke.oxfordbuses.adapters.RegularStopAdapter;
+import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.utils.Constants;
-import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +40,9 @@ public class StopMapListener implements OnClickListener
 				String naptanCode = ((EditText)((AlertDialog)dialog).findViewById(R.id.NaptanEditText)).getText().toString();
 				
 				// Create a new Intent and launch the application abble to read the URI built from the naptan code
-				i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(naptanCode, context));
+				i = new Intent(context, ListTimesActivity.class);
+				i.putExtra("stopName", naptanCode);
+				i.putExtra("naptanCode", naptanCode);
 				context.startActivity(i);
 				break;
 
@@ -78,10 +81,14 @@ public class StopMapListener implements OnClickListener
 					// The user selects a bus Stop from the list
 					default:
 						// Get the naptan code of the selected bus Stop
-						String naptan = ((RegularStopAdapter)((AlertDialog)dialog).getListView().getAdapter()).getItem(which).getNaptanCode();
+						Stop stop = ((RegularStopAdapter)((AlertDialog)dialog).getListView().getAdapter()).getItem(which);
+						String name = stop.getStopName();
+						String naptan = stop.getNaptanCode();
 
 						// Create a new Intent and launch the application abble to read the URI built from the naptan code
-						i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(naptan, context));
+						i = new Intent(context, ListTimesActivity.class);
+						i.putExtra("stopName", name);
+						i.putExtra("naptanCode", naptan);
 						context.startActivity(i);
 				}
 				break;

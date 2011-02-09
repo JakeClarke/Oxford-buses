@@ -14,14 +14,22 @@
     <string name="stopmap_menu_favs">Favs</string>
     <!-- End StopMapActivity Labels -->
     
+    <!-- Start ListTimesActivity Labels -->
+    <string name="times_title">%1$s Times</string>
+    <!-- End ListTimesActivity Labels -->
+    
+    <!-- Start ListStopsActivity Labels -->
+    <string name="stops_title">Bus stops</string>
+    <!-- End ListStopsActivity Labels -->
+    
     <!-- Start ListFavouriteStopsActivity Labels -->
     <string name="favourite_title">Favourite stops</string>
-    <string name="favourite_showing_timetable">Showing timetable</string>
     <string name="favourite_menu_add_stop">Add Stop</string>
     <string name="favourite_menu_add">Add</string>
     <!-- End ListFavouriteStopsActivity Labels -->
     
     <!-- Start SettingsActivity Labels -->
+    <string name="settings_title">Settings</string>
     <string name="settings_map">Buses map</string>
     <string name="settings_reload_title">Reload buses</string>
     <string name="settings_reload_summary">Fetch all buses stops from Internet</string>
@@ -70,6 +78,9 @@
     <string name="liststopsdialogs_no">No</string>
     <string name="liststopsdialogs_added">Added to favourites</string>
     
+    <string name="listtimesdialogs_no_departures">No departures</string>
+    <string name="listtimesdialogs_no_departure_info_available">No departure information available</string>
+    
     <string name="stopmapdialogs_database_refresh_required">Database refresh required</string>
     <string name="stopmapdialogs_first_launch_message">This is the first time this app has been run and will need to build the stop database. \nThis will take a couple of minutes on a mobile connection. This only needs to take place once.</string>
     <string name="stopmapdialogs_build_now">Build now</string>
@@ -78,4 +89,7 @@
     <string name="stopitemizedoverlay_dialogs_pick_stop">Pick a stop</string>
     <string name="stopitemizedoverlay_dialogs_close">Close</string>
     <!-- End Dialogs Labels -->
+    
+    <string name="loading">Loading...</string>
+    <string name="error_scrapping">Error occured, switching to the browser...</string>
 </resources>

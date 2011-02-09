@@ -1,11 +1,11 @@
 package uk.co.jakeclarke.oxfordbuses.handlers;
 
 import uk.co.jakeclarke.oxfordbuses.ListFavouriteStopsActivity;
+import uk.co.jakeclarke.oxfordbuses.ListTimesActivity;
 import uk.co.jakeclarke.oxfordbuses.R;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.providers.StopProvider;
 import uk.co.jakeclarke.oxfordbuses.utils.Constants;
-import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,13 +41,14 @@ public class ListFavouriteStopsListener implements OnItemClickListener, OnItemLo
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
 		// Get the selected bus Stop naptan code from the list
-		String stopNaptan = ((Stop)parent.getAdapter().getItem(position)).getNaptanCode();
+		Stop stop = (Stop)parent.getAdapter().getItem(position);
+		String stopName = stop.getStopName();
+		String stopNaptan = stop.getNaptanCode();
 		
-		// Display a message to the user
-		Toast.makeText(context, context.getString(R.string.favourite_showing_timetable), Toast.LENGTH_LONG).show();
-
 		// Create a new Intent and launch the application abble to read the URI built from the naptan code
-		Intent i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(stopNaptan, context));
+		Intent i = new Intent(context, ListTimesActivity.class);
+		i.putExtra("stopName", stopName);
+		i.putExtra("naptanCode", stopNaptan);
 		context.startActivity(i);
 	}
 

@@ -13,9 +13,12 @@ public class Constants
 	public static final String KEY_STOPBEARING = "stopBearing";
 	public static final String KEY_PARENTMAP = "parentMap";
 	public static final String KEY_ID = " _id";
-	
+
+    public static final String XPATH_TIMES = "//td[position() < 4]";
+    
 	// Caution: Parameterized String
 	public static final String OXFORDSHIRE_SOURCE = "http://oxfordshire.acislive.com/pda/mainfeed.asp?type=STOPS&maplevel=2&SessionID=%1$s&systemid=35&stopSelected=34000000701";
+	public static final String TIMES_URL_PATTERN = "http://www.oxontime.com/pip/stop.asp?naptan=%1$s&textonly=%2$s";
 
 	public static final String SCRAP_STOP = "STOP";
 	public static final String SCRAP_35 = "35";

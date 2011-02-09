@@ -1,10 +1,10 @@
 package uk.co.jakeclarke.oxfordbuses.handlers;
 
 import uk.co.jakeclarke.oxfordbuses.ListStopsActivity;
+import uk.co.jakeclarke.oxfordbuses.ListTimesActivity;
 import uk.co.jakeclarke.oxfordbuses.R;
 import uk.co.jakeclarke.oxfordbuses.datatypes.Stop;
 import uk.co.jakeclarke.oxfordbuses.utils.Constants;
-import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
@@ -40,7 +40,9 @@ public class ListStopsListener implements OnItemClickListener, OnItemLongClickLi
 		Toast.makeText(context, stopName, Toast.LENGTH_SHORT).show();
 
 		// Create a new Intent and launch the application abble to read the URI built from the naptan code
-		Intent i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(stopNaptan, context));
+		Intent i = new Intent(context, ListTimesActivity.class);
+		i.putExtra("stopName", stopName);
+		i.putExtra("naptanCode", stopNaptan);
 		context.startActivity(i);
 	}
 
