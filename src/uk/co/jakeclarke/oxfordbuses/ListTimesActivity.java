@@ -30,16 +30,6 @@ public class ListTimesActivity extends ListActivity
     final Handler uiThreadCallback = new Handler();
     
     /**
-     * Refresh the list of times
-     */
-    @Override
-    protected void onStart()
-    {
-    	super.onStart();
-    	refreshTimesList();
-	}
-    
-    /**
      * Refresh and display the times of a bus stop
      */
     public void refreshTimesList ()
@@ -64,6 +54,16 @@ public class ListTimesActivity extends ListActivity
 				}
 			}
 		};
+
+		final Runnable makeToast = new Runnable()
+		{
+			public void run()
+			{
+
+				// If an error occurs (a change in the web page layout for instance), open the browser like before
+				Toast.makeText(ListTimesActivity.this, R.string.error_scrapping, Toast.LENGTH_SHORT).show();
+			}
+		};
 	
 		// Launch the retrieving of the notes in a new thread
 		new Thread()
@@ -75,19 +75,19 @@ public class ListTimesActivity extends ListActivity
 				{
 					// Go scrap the oxontime's website
 					timesList = OxontimeScrape.getInstance().getBusStopTimes(naptanCode);
+					uiThreadCallback.post(runInUIThread);
+					mProgressDialog.dismiss();
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					uiThreadCallback.post(makeToast);
+					mProgressDialog.dismiss();
 					
-					// If an error occurs (a change in the web page layout for instance), open the browser like before
-					Toast.makeText(ListTimesActivity.this, R.string.error_scrapping, Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
 					Intent i = new Intent(Intent.ACTION_VIEW, OxontimeUtils.getTimesUri(naptanCode, ListTimesActivity.this));
 					ListTimesActivity.this.startActivity(i);
 					ListTimesActivity.this.finish();
 				}
-				uiThreadCallback.post(runInUIThread);
-				mProgressDialog.dismiss();
 			}
 		}.start();
     }
@@ -100,6 +100,7 @@ public class ListTimesActivity extends ListActivity
 		naptanCode = getIntent().getStringExtra("naptanCode");
 		
 		setTitle(getString(R.string.times_title, stopName));
+    	refreshTimesList();
 	}
 	
     @Override
