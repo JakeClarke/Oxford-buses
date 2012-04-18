@@ -77,9 +77,9 @@ public class StopMapActivity extends MapActivity {
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable stopIcon = this.getResources().getDrawable(R.drawable.stopicon);
         StopItemizedOverlay stopOverlay = new StopItemizedOverlay(stopIcon, StopMapActivity.this);
-        
-        mapOverlays.add(stopOverlay);
+
         mapOverlays.add(myLocation);
+        mapOverlays.add(stopOverlay);
         
         if (stopOverlay.size() == 0) {
 			promptBuildDB();
