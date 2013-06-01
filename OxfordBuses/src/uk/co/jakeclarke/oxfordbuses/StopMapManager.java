@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import uk.me.jstott.jcoord.OSRef;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -24,7 +25,7 @@ public final class StopMapManager {
 	private Context context;
 	private RequestQueue requestQueue;
 	private static final String requestUrl = "http://www.oxontime.com/MapWebService.asmx/GetMarker";
-	private static final String requestBody = "{\"Layers\":\"naptanbus\",\"DateType\":0,\"FromDate\":\"\",\"ToDate\":\"\",\"ZoomLevel\":\"5.0\",\"Easting\":402451,\"Northing\":149757,\"EastingEnd\":530431,\"NorthingEnd\":263157,\"IsLonLat\":false}";
+	private static final String requestBody = "{\"Layers\":\"naptanbus\",\"DateType\":0,\"FromDate\":\"\",\"ToDate\":\"\",\"ZoomLevel\":\"3.0\",\"Easting\":402451,\"Northing\":149757,\"EastingEnd\":530431,\"NorthingEnd\":263157,\"IsLonLat\":false}";
 	private JSONObject request;
 	private final Listener<JSONObject> listener;
 	private final ErrorListener errorListener;
@@ -109,9 +110,11 @@ public final class StopMapManager {
 	}
 
 	public void updateStops() {
-		if (jr != null)
+		if (jr != null) {
+			Toast.makeText(this.context, R.string.act_refreshing,
+					Toast.LENGTH_SHORT).show();
 			this.requestQueue.add(jr);
-		else {
+		} else {
 			notifyError();
 		}
 	}
