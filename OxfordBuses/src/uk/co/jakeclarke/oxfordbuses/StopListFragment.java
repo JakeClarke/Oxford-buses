@@ -1,8 +1,11 @@
 package uk.co.jakeclarke.oxfordbuses;
 
+import java.util.ArrayList;
+
 import uk.co.jakeclarke.oxfordbuses.StopMapManager.Stop;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -98,18 +101,49 @@ public class StopListFragment extends Fragment {
 		this.updateAdapter();
 	}
 
-	private void updateAdapter() {
-		this.stopListAdapter.clear();
-		for (Stop s : this.stops) {
-			if (this.search.getText().equals("")
-					|| s.Name.toUpperCase().contains(
-							this.search.getText().toString().toUpperCase())
-					|| s.Naptan.contains(this.search.getText())) {
-				this.stopListAdapter.add(s);
-			}
-		}
+	Object listLock = new Object();
 
-		this.stopListAdapter.notifyDataSetChanged();
+	Handler h = new Handler();
+
+	private void updateAdapter() {
+
+		Runnable rs = new Runnable() {
+
+			final ArrayList<Stop> newStops = new ArrayList<Stop>();
+			// cache to provent cracshes.
+			final String searchQ = search.getText().toString();
+
+			@Override
+			public void run() {
+				for (Stop s : stops) {
+					if (search.getText().equals("")
+							|| s.Name.toUpperCase().contains(
+									searchQ.toUpperCase())
+							|| s.Naptan.contains(searchQ)) {
+						newStops.add(s);
+					}
+				}
+
+				// post the change back the main thread.
+				h.post(new Runnable() {
+
+					@Override
+					public void run() {
+						stopListAdapter.clear();
+						for (Stop s : newStops) {
+							stopListAdapter.add(s);
+						}
+
+						// stopListAdapter.notifyDataSetChanged();
+					}
+
+				});
+
+			}
+
+		};
+		new Thread(rs).start();
+
 	}
 
 	SelectionListener selectionListener;
