@@ -2,12 +2,14 @@ package uk.co.jakeclarke.oxfordbuses;
 
 import java.util.HashMap;
 
+import uk.co.jakeclarke.oxfordbuses.StopListFragment.SelectionListener;
 import uk.co.jakeclarke.oxfordbuses.StopMapManager.Stop;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
@@ -19,6 +21,8 @@ public class MainMapActivity extends FragmentActivity {
 	private StopListFragment stopList;
 	private GoogleMap map;
 	private HashMap<Marker, Stop> stopLookup = new HashMap<Marker, Stop>();
+	// bit of a hack there has to be a better way of doing this.
+	private HashMap<Stop, Marker> markerLookup = new HashMap<Stop, Marker>();
 	private StopMapManager stopManager;
 	private boolean hasDoublePanel = false;
 
@@ -68,6 +72,7 @@ public class MainMapActivity extends FragmentActivity {
 							.position(s.latlong).title(s.Name)
 							.snippet(s.Naptan));
 					stopLookup.put(m, s);
+					markerLookup.put(s, m);
 				}
 
 			}
@@ -79,6 +84,20 @@ public class MainMapActivity extends FragmentActivity {
 			}
 
 		});
+
+		if (this.hasDoublePanel) {
+			this.stopList.setSelectionListener(new SelectionListener() {
+
+				@Override
+				void onSelection(Stop selection) {
+					markerLookup.get(selection).showInfoWindow();
+					map.animateCamera(CameraUpdateFactory
+							.newLatLng(selection.latlong));
+				}
+
+			});
+
+		}
 
 	}
 

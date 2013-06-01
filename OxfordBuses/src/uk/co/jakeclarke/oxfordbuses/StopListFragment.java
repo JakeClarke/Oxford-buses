@@ -9,6 +9,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,6 +57,18 @@ public class StopListFragment extends Fragment {
 
 		this.list.setAdapter(stopListAdapter);
 
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				if (selectionListener != null)
+					selectionListener.onSelection(((Stop) arg0
+							.getItemAtPosition(position)));
+
+			}
+		});
+
 		return v;
 	}
 
@@ -96,5 +110,15 @@ public class StopListFragment extends Fragment {
 		}
 
 		this.stopListAdapter.notifyDataSetChanged();
+	}
+
+	SelectionListener selectionListener;
+
+	public void setSelectionListener(SelectionListener listener) {
+		this.selectionListener = listener;
+	}
+
+	public static abstract class SelectionListener {
+		abstract void onSelection(Stop selection);
 	}
 }
