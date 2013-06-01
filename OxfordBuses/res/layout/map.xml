@@ -15,6 +15,6 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         map:cameraTargetLat="51.7511"
         map:cameraTargetLng="-1.2558"
-        map:cameraZoom="13" />
+        map:cameraZoom="16" />
 
 </RelativeLayout>
