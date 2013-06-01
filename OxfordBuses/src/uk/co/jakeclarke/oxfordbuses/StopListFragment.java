@@ -28,7 +28,6 @@ public class StopListFragment extends Fragment {
 		View v = inflater.inflate(R.layout.stoplist, container, false);
 		this.list = (ListView) v.findViewById(R.id.stoplist);
 		this.list.setAdapter(this.stopListAdapter);
-		this.list.requestFocus();
 
 		this.search = (EditText) v.findViewById(R.id.searchbox);
 		this.search.addTextChangedListener(new TextWatcher() {
