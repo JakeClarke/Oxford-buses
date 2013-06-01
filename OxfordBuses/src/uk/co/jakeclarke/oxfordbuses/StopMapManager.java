@@ -24,7 +24,7 @@ public final class StopMapManager {
 	private Context context;
 	private RequestQueue requestQueue;
 	private static final String requestUrl = "http://www.oxontime.com/MapWebService.asmx/GetMarker";
-	private static final String requestBody = "{\"Layers\":\"naptanbus\",\"DateType\":0,\"FromDate\":\"\",\"ToDate\":\"\",\"ZoomLevel\":\"135.0\",\"Easting\":402451,\"Northing\":149757,\"EastingEnd\":530431,\"NorthingEnd\":263157,\"IsLonLat\":false}";
+	private static final String requestBody = "{\"Layers\":\"naptanbus\",\"DateType\":0,\"FromDate\":\"\",\"ToDate\":\"\",\"ZoomLevel\":\"5.0\",\"Easting\":402451,\"Northing\":149757,\"EastingEnd\":530431,\"NorthingEnd\":263157,\"IsLonLat\":false}";
 	private JSONObject request;
 	private final Listener<JSONObject> listener;
 	private final ErrorListener errorListener;
