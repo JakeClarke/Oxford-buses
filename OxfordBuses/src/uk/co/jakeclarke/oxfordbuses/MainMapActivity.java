@@ -49,42 +49,42 @@ public class MainMapActivity extends FragmentActivity {
 		this.map.setMyLocationEnabled(true);
 
 		if (this.map != null) {
-			this.stopManager = new StopMapManager(this);
-			this.stopManager.updateStops();
+			this.stopManager = new StopMapManager(this,
+					new StopMapManager.StopUpdateListener() {
+
+						@Override
+						void onUpdate(StopMapManager stopMapManager) {
+							stopLookup.clear();
+
+							Stop[] stops = stopMapManager.getStops();
+
+							if (hasDoublePanel) {
+								stopList.setStops(stops);
+							}
+
+							for (int i = 0; i < stops.length; i++) {
+								// this does nothing.
+								Stop s = stops[i];
+
+								Marker m = map.addMarker(new MarkerOptions()
+										.position(s.latlong).title(s.Name)
+										.snippet(s.Naptan));
+								stopLookup.put(m, s);
+								markerLookup.put(s, m);
+							}
+
+						}
+
+						@Override
+						void onError(StopMapManager stopMapManager) {
+							// TODO Auto-generated method stub
+
+						}
+
+					});
 		}
 
-		this.stopManager.setListener(new StopMapManager.StopUpdateListener() {
-
-			@Override
-			void onUpdate(StopMapManager stopMapManager) {
-				stopLookup.clear();
-
-				Stop[] stops = stopMapManager.getStops();
-
-				if (hasDoublePanel) {
-					stopList.setStops(stops);
-				}
-
-				for (int i = 0; i < stops.length; i++) {
-					// this does nothing.
-					Stop s = stops[i];
-
-					Marker m = map.addMarker(new MarkerOptions()
-							.position(s.latlong).title(s.Name)
-							.snippet(s.Naptan));
-					stopLookup.put(m, s);
-					markerLookup.put(s, m);
-				}
-
-			}
-
-			@Override
-			void onError(StopMapManager stopMapManager) {
-				// TODO Auto-generated method stub
-
-			}
-
-		});
+		;
 
 		if (this.hasDoublePanel) {
 			this.stopList.setSelectionListener(new SelectionListener() {

@@ -1,6 +1,7 @@
 package uk.co.jakeclarke.oxfordbuses;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 
 import uk.me.jstott.jcoord.OSRef;
 import android.content.Context;
+import android.database.SQLException;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,9 +34,13 @@ public final class StopMapManager {
 	private JsonObjectRequest jr;
 	private ArrayList<Stop> stops = new ArrayList<Stop>();
 	private StopUpdateListener updateListener;
+	private StopProvider stopDB;
 
-	public StopMapManager(Context context) {
+	public StopMapManager(final Context context,
+			StopUpdateListener updateListener) {
 		this.context = context;
+		this.stopDB = new StopProvider(this.context);
+		this.updateListener = updateListener;
 
 		this.listener = new Listener<JSONObject>() {
 
@@ -80,6 +86,22 @@ public final class StopMapManager {
 						"Number of stops retrieved: " + stops.size()
 								+ ", errors:" + errors);
 
+				if (errors == 0) {
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							synchronized (stopDB) {
+								stopDB.open();
+								Log.d("Stop db", "Saving stops!");
+								stopDB.clear();
+								stopDB.insertStops(stops.toArray(new Stop[0]));
+								stopDB.close();
+							}
+							Log.d("Stop db", "Saving stops complete!");
+						}
+					}).start();
+				}
 				notifyUpdate();
 			}
 
@@ -105,6 +127,24 @@ public final class StopMapManager {
 			e.printStackTrace();
 			notifyError();
 
+		}
+
+		try {
+			synchronized (stopDB) {
+				this.stopDB.open();
+				Stop[] cachedStops = this.stopDB.getAllStops();
+				if (cachedStops != null) {
+					this.stops.addAll(Arrays.asList(cachedStops));
+					notifyUpdate();
+				} else {
+					this.updateStops();
+				}
+				this.stopDB.close();
+			}
+		} catch (SQLException e) {
+			Toast.makeText(this.context, "Error getting stops",
+					Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
 		}
 
 	}
@@ -139,6 +179,11 @@ public final class StopMapManager {
 			s.Naptan = summary.getString(2);
 
 			return s;
+		}
+
+		@Override
+		public String toString() {
+			return this.Name + ", " + this.Naptan;
 		}
 
 	}
