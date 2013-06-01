@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_hint">Sms code or stop name</string>
+    <string name="refresh_stops">Refresh</string>
+    <string name="act_refreshing">Refreshing...</string>
     
 </resources>
