@@ -17,4 +17,5 @@
     <string name="settings_oxontime_textmode_title">Use text mode for times?</string>
     <string name="settings_oxontime_textmode_summary_on">Current is text mode</string>
     <string name="settings_oxontime_textmode_summary_off">Current is plain view mode</string>
+    <string name="app_id">245658886088</string>
 </resources>
