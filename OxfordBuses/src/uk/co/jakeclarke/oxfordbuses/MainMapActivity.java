@@ -1,45 +1,96 @@
 package uk.co.jakeclarke.oxfordbuses;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import java.util.HashMap;
 
+import uk.co.jakeclarke.oxfordbuses.StopMapManager.Stop;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 public class MainMapActivity extends FragmentActivity {
-	
+
 	private SupportMapFragment mapFragment;
+	private StopListFragment stopList;
 	private GoogleMap map;
-	StopMapManager stopManager;
-	
+	private HashMap<Marker, Stop> stopLookup = new HashMap<Marker, Stop>();
+	private StopMapManager stopManager;
+	private boolean hasDoublePanel = false;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		this.setContentView(R.layout.map);
-		this.mapFragment = (SupportMapFragment)this.getSupportFragmentManager().findFragmentById(R.id.map);
+		this.mapFragment = (SupportMapFragment) this
+				.getSupportFragmentManager().findFragmentById(R.id.map);
+
+		this.stopList = (StopListFragment) this.getSupportFragmentManager()
+				.findFragmentById(R.id.stoplist);
+
+		if (this.stopList != null) {
+			this.hasDoublePanel = true;
+		}
+
 	}
-	
+
 	protected void onStart() {
 		super.onStart();
 		this.map = this.mapFragment.getMap();
 		this.map.setMyLocationEnabled(true);
-		
-		if(this.map != null) {
-			this.stopManager = new StopMapManager(this, this.map);
+
+		if (this.map != null) {
+			this.stopManager = new StopMapManager(this);
 			this.stopManager.updateStops();
 		}
-		
+
+		this.stopManager.setListener(new StopMapManager.StopUpdateListener() {
+
+			@Override
+			void onUpdate(StopMapManager stopMapManager) {
+				stopLookup.clear();
+
+				Stop[] stops = stopMapManager.getStops();
+
+				if (hasDoublePanel) {
+					stopList.setStops(stops);
+				}
+
+				for (int i = 0; i < stops.length; i++) {
+					// this does nothing.
+					Stop s = stops[i];
+
+					Marker m = map.addMarker(new MarkerOptions()
+							.position(s.latlong).title(s.Name)
+							.snippet(s.Naptan));
+					stopLookup.put(m, s);
+				}
+
+			}
+
+			@Override
+			void onError(StopMapManager stopMapManager) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.mapmenu, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mapmenu, menu);
+		if (this.hasDoublePanel) {
+			menu.removeItem(R.id.listbutton);
+		}
+
+		return true;
 	}
-	
-	
-	
+
 }

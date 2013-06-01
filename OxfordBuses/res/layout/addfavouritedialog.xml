@@ -5,7 +5,7 @@
   android:layout_height="fill_parent" android:orientation="vertical"
   android:id="@+id/layout_root" >
 <TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Please enter a stop name:"></TextView>
-<EditText android:hint="Stop name" android:id="@+id/favstopname" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+<EditText android:hint="Stop name" android:id="@+id/stopname" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
 <TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Please enter a stop number (naptan):"></TextView>
 <EditText android:layout_height="wrap_content" android:id="@+id/favstopnumber" android:hint="Stop number" android:layout_width="fill_parent"></EditText>
 

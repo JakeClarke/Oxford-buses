@@ -42,7 +42,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
 		sp = new StopProvider(this);
 		sp.open();
 		Cursor c = sp.getAllFavourites();
-		adapter = new SimpleCursorAdapter(this, R.layout.favouritestop, c, new String[]{"naptancode", "stopName"}, new int[] {R.id.favstopnaptan, R.id.favstopname} );
+		adapter = new SimpleCursorAdapter(this, R.layout.favouritestop, c, new String[]{"naptancode", "stopName"}, new int[] {R.id.stopnaptan, R.id.stopname} );
 		this.setListAdapter(adapter);
 		
 		ListView lv = this.getListView();
@@ -114,7 +114,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
     		View layout = inflater.inflate(R.layout.addfavouritedialog, (ViewGroup) findViewById(R.id.layout_root));
     		AlertDialog.Builder builder = new Builder(this);
     		final EditText favstopNumber = (EditText)layout.findViewById(R.id.favstopnumber);
-    		final EditText favstopName = (EditText)layout.findViewById(R.id.favstopname);
+    		final EditText favstopName = (EditText)layout.findViewById(R.id.stopname);
     		
     		builder.setView(layout);
     		builder.setPositiveButton("Add stop",  new android.content.DialogInterface.OnClickListener() {

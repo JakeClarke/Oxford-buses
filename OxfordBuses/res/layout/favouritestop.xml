@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:padding="3px">
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/favstopname" android:text="FavStopName" android:textSize="17px"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/favstopnaptan" android:text="naptan"></TextView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="3px" >
+
+    <TextView
+        android:id="@+id/stopname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="StopName"
+        android:textSize="17px" >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/stopnaptan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="naptan" >
+
+    </TextView>
+
 </LinearLayout>
