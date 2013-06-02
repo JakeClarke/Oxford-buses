@@ -23,7 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 
-public final class StopMapManager {
+public final class StopsProvider {
 
 	private Context context;
 	private RequestQueue requestQueue;
@@ -37,7 +37,7 @@ public final class StopMapManager {
 	private StopUpdateListener updateListener;
 	private StopsDatabase stopDB;
 
-	public StopMapManager(final Context context,
+	public StopsProvider(final Context context,
 			StopUpdateListener updateListener) {
 		this.context = context;
 		this.stopDB = new StopsDatabase(this.context);
@@ -191,9 +191,9 @@ public final class StopMapManager {
 
 	public abstract static class StopUpdateListener {
 
-		abstract void onUpdate(StopMapManager stopMapManager);
+		abstract void onUpdate(StopsProvider stopMapManager);
 
-		abstract void onError(StopMapManager stopMapManager);
+		abstract void onError(StopsProvider stopMapManager);
 	}
 
 	public void setListener(StopUpdateListener listener) {

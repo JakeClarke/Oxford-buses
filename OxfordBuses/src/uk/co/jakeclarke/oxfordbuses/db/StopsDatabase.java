@@ -1,7 +1,7 @@
 package uk.co.jakeclarke.oxfordbuses.db;
 
-import uk.co.jakeclarke.oxfordbuses.StopMapManager;
-import uk.co.jakeclarke.oxfordbuses.StopMapManager.Stop;
+import uk.co.jakeclarke.oxfordbuses.StopsProvider;
+import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

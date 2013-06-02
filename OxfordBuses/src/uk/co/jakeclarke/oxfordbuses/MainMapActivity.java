@@ -3,7 +3,7 @@ package uk.co.jakeclarke.oxfordbuses;
 import java.util.HashMap;
 
 import uk.co.jakeclarke.oxfordbuses.StopListFragment.SelectionListener;
-import uk.co.jakeclarke.oxfordbuses.StopMapManager.Stop;
+import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -24,7 +24,7 @@ public class MainMapActivity extends FragmentActivity {
 	private HashMap<Marker, Stop> stopLookup = new HashMap<Marker, Stop>();
 	// bit of a hack there has to be a better way of doing this.
 	private HashMap<Stop, Marker> markerLookup = new HashMap<Stop, Marker>();
-	private StopMapManager stopManager;
+	private StopsProvider stopManager;
 	private boolean hasDoublePanel = false;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,11 @@ public class MainMapActivity extends FragmentActivity {
 		this.map.setMyLocationEnabled(true);
 
 		if (this.map != null) {
-			this.stopManager = new StopMapManager(this,
-					new StopMapManager.StopUpdateListener() {
+			this.stopManager = new StopsProvider(this,
+					new StopsProvider.StopUpdateListener() {
 
 						@Override
-						void onUpdate(StopMapManager stopMapManager) {
+						void onUpdate(StopsProvider stopMapManager) {
 							stopLookup.clear();
 
 							Stop[] stops = stopMapManager.getStops();
@@ -76,7 +76,7 @@ public class MainMapActivity extends FragmentActivity {
 						}
 
 						@Override
-						void onError(StopMapManager stopMapManager) {
+						void onError(StopsProvider stopMapManager) {
 							// TODO Auto-generated method stub
 
 						}
