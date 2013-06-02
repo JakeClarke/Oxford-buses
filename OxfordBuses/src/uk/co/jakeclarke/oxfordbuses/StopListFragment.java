@@ -78,7 +78,7 @@ public class StopListFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		stopListAdapter = new ArrayAdapter<Stop>(activity,
-				R.layout.favouritestop, R.id.stopname) {
+				R.layout.stoplistitem, R.id.stopname) {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
