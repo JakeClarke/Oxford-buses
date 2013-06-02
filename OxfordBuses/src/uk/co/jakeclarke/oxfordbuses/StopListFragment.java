@@ -111,12 +111,13 @@ public class StopListFragment extends Fragment {
 
 			final ArrayList<Stop> newStops = new ArrayList<Stop>();
 			// cache to provent cracshes.
-			final String searchQ = search.getText().toString();
+			final String searchQ = (search != null) ? search.getText()
+					.toString() : "";
 
 			@Override
 			public void run() {
 				for (Stop s : stops) {
-					if (search.getText().equals("")
+					if (searchQ.equals("")
 							|| s.Name.toUpperCase().contains(
 									searchQ.toUpperCase())
 							|| s.Naptan.contains(searchQ)) {
