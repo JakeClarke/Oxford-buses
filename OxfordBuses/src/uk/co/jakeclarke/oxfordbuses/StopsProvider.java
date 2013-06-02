@@ -11,6 +11,8 @@ import uk.co.jakeclarke.oxfordbuses.db.StopsDatabase;
 import uk.me.jstott.jcoord.OSRef;
 import android.content.Context;
 import android.database.SQLException;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -40,6 +42,10 @@ public final class StopsProvider {
 	private ArrayList<Stop> stops = new ArrayList<Stop>();
 	private StopUpdateListener updateListener;
 	private StopsDatabase stopDB;
+
+	public StopsProvider(final Context context) {
+		this(context, null);
+	}
 
 	public StopsProvider(final Context context,
 			StopUpdateListener updateListener) {
@@ -171,11 +177,15 @@ public final class StopsProvider {
 		}
 	}
 
-	public static class Stop {
+	public static class Stop implements Parcelable {
 		public String Name;
 		public String Scn;
 		public LatLng latlong;
 		public String Naptan;
+
+		public Stop() {
+
+		}
 
 		public static Stop fromJSON(JSONObject jo) throws JSONException {
 			Stop s = new Stop();
@@ -196,6 +206,37 @@ public final class StopsProvider {
 		@Override
 		public String toString() {
 			return this.Name + ", " + this.Naptan;
+		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			dest.writeString(this.Name);
+			dest.writeString(this.Naptan);
+			dest.writeString(this.Scn);
+			dest.writeDouble(this.latlong.latitude);
+			dest.writeDouble(this.latlong.longitude);
+		}
+
+		public static final Parcelable.Creator<Stop> CREATOR = new Parcelable.Creator<Stop>() {
+			public Stop createFromParcel(Parcel in) {
+				return new Stop(in);
+			}
+
+			public Stop[] newArray(int size) {
+				return new Stop[size];
+			}
+		};
+
+		private Stop(Parcel in) {
+			this.Name = in.readString();
+			this.Naptan = in.readString();
+			this.Scn = in.readString();
+			this.latlong = new LatLng(in.readDouble(), in.readDouble());
 		}
 
 	}

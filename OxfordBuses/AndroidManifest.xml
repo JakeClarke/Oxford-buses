@@ -41,10 +41,8 @@ s
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ListFavouriteStopsActivity" >
-        </activity>
-        <activity android:name="SettingsActivity" >
-        </activity>
+        <activity android:name="StopListActivity"></activity>
+        <activity android:name="DeparturesActivity"></activity>
     </application>
 
 </manifest>

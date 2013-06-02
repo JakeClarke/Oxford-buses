@@ -44,16 +44,19 @@ public class DeparturesFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View v = inflater.inflate(R.layout.departureslist, container, false);
 
-		// quick hack to fix orientation change crashes. This
-		// fragment doesn't get used anyway.
-		if (stop == null)
-			return v;
-
 		this.stopName = (TextView) v.findViewById(R.id.d_stopname);
-		this.stopName.setText(stop.Name);
+
 		this.naptan = (TextView) v.findViewById(R.id.d_naptancode);
-		this.naptan.setText(stop.Naptan);
+
 		this.departuresList = (ListView) v.findViewById(R.id.d_list);
+
+		return v;
+	}
+
+	@Override
+	public void onResume() {
+		this.stopName.setText(stop.Name);
+		this.naptan.setText(stop.Naptan);
 
 		this.departuresAdapter = new ArrayAdapter<Bus>(this.getActivity()
 				.getApplicationContext(), R.layout.departuresitem,
@@ -83,11 +86,6 @@ public class DeparturesFragment extends Fragment {
 		this.departuresProvider
 				.setDeparturesUpdateListener(this.departuresUpdateListener);
 
-		return v;
-	}
-
-	@Override
-	public void onResume() {
 		this.departuresProvider.startUpdate();
 		super.onResume();
 	}

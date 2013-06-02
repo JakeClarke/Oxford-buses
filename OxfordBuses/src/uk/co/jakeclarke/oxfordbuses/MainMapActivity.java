@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import uk.co.jakeclarke.oxfordbuses.StopListFragment.SelectionListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -92,7 +93,7 @@ public class MainMapActivity extends FragmentActivity {
 					});
 		}
 
-		if (this.hasDoublePanel) {
+		if (this.hasDoublePanel) { // tablet actions.
 			this.stopList.setSelectionListener(new SelectionListener() {
 
 				@Override
@@ -122,6 +123,21 @@ public class MainMapActivity extends FragmentActivity {
 
 			});
 
+		} else {
+			// phone action.
+			this.map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+				@Override
+				public void onInfoWindowClick(Marker marker) {
+					Intent i = new Intent(MainMapActivity.this,
+							DeparturesActivity.class);
+
+					i.putExtra(DeparturesActivity.KEY_STOP,
+							stopLookup.get(marker));
+					MainMapActivity.this.startActivity(i);
+				}
+			});
+
 		}
 
 	}
@@ -142,8 +158,11 @@ public class MainMapActivity extends FragmentActivity {
 		if (item.getItemId() == R.id.refresh) {
 			this.stopManager.updateStops();
 			return true;
+		} else if (item.getItemId() == R.id.listbutton) {
+			Intent i = new Intent(this, StopListActivity.class);
+			this.startActivity(i);
+			return true;
 		}
-
 		return false;
 	}
 
