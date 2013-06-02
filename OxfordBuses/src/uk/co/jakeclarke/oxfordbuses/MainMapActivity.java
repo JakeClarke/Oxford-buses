@@ -6,12 +6,14 @@ import uk.co.jakeclarke.oxfordbuses.StopListFragment.SelectionListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,8 +36,14 @@ public class MainMapActivity extends FragmentActivity {
 		this.mapFragment = (SupportMapFragment) this
 				.getSupportFragmentManager().findFragmentById(R.id.map);
 
-		this.stopList = (StopListFragment) this.getSupportFragmentManager()
-				.findFragmentById(R.id.stoplist);
+		this.stopList = new StopListFragment();
+
+		FragmentTransaction transaction = MainMapActivity.this
+				.getSupportFragmentManager().beginTransaction();
+
+		transaction.add(R.id.listframe, this.stopList);
+		transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+		transaction.commit();
 
 		if (this.stopList != null) {
 			this.hasDoublePanel = true;
@@ -84,8 +92,6 @@ public class MainMapActivity extends FragmentActivity {
 					});
 		}
 
-		;
-
 		if (this.hasDoublePanel) {
 			this.stopList.setSelectionListener(new SelectionListener() {
 
@@ -94,6 +100,24 @@ public class MainMapActivity extends FragmentActivity {
 					markerLookup.get(selection).showInfoWindow();
 					map.animateCamera(CameraUpdateFactory
 							.newLatLng(selection.latlong));
+				}
+
+			});
+
+			this.map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+				@Override
+				public void onInfoWindowClick(Marker marker) {
+					DeparturesFragment departures = new DeparturesFragment();
+					departures.setStop(stopLookup.get(marker));
+					FragmentTransaction transaction = MainMapActivity.this
+							.getSupportFragmentManager().beginTransaction();
+
+					transaction.replace(R.id.listframe, departures);
+					transaction
+							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+					transaction.addToBackStack(null);
+					transaction.commit();
 				}
 
 			});

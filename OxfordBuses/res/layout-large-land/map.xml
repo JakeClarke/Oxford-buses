@@ -9,13 +9,13 @@
     tools:context=".MainMapActivity" 
     android:baselineAligned="false">
 
-    <fragment
-        android:id="@+id/stoplist"
-        android:name="uk.co.jakeclarke.oxfordbuses.StopListFragment"
+    <FrameLayout
+        android:id="@+id/listframe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        tools:layout="@layout/stoplist" />
+        android:layout_weight="2" >
+
+    </FrameLayout>
 
     <fragment
         android:id="@+id/map"

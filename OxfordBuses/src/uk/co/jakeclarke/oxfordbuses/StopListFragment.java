@@ -34,7 +34,7 @@ public class StopListFragment extends Fragment {
 		this.list = (ListView) v.findViewById(R.id.stoplist);
 		this.list.setAdapter(this.stopListAdapter);
 
-		this.search = (EditText) v.findViewById(R.id.searchbox);
+		this.search = (EditText) v.findViewById(R.id.d_stopname);
 		this.search.addTextChangedListener(new TextWatcher() {
 
 			@Override
