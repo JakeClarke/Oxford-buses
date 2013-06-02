@@ -36,17 +36,17 @@ public class MainMapActivity extends FragmentActivity {
 		this.mapFragment = (SupportMapFragment) this
 				.getSupportFragmentManager().findFragmentById(R.id.map);
 
-		this.stopList = new StopListFragment();
-
-		FragmentTransaction transaction = MainMapActivity.this
-				.getSupportFragmentManager().beginTransaction();
-
-		transaction.add(R.id.listframe, this.stopList);
-		transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-		transaction.commit();
-
-		if (this.stopList != null) {
+		if (this.findViewById(R.id.listframe) != null) {
 			this.hasDoublePanel = true;
+
+			this.stopList = new StopListFragment();
+
+			FragmentTransaction transaction = MainMapActivity.this
+					.getSupportFragmentManager().beginTransaction();
+
+			transaction.add(R.id.listframe, this.stopList);
+			transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+			transaction.commit();
 		}
 
 	}

@@ -5,7 +5,6 @@ import uk.co.jakeclarke.oxfordbuses.DeparturesProvider.DeparturesUpdateListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ public class DeparturesFragment extends Fragment {
 
 		@Override
 		void onUpdate(DeparturesProvider departuresProvider) {
-			Log.d("Departures", "Update recieved!");
 			departuresAdapter.clear();
 			for (Bus b : departuresProvider.getDepartures().buses) {
 				departuresAdapter.add(b);
@@ -45,6 +43,11 @@ public class DeparturesFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View v = inflater.inflate(R.layout.departureslist, container, false);
+
+		// quick hack to fix orientation change crashes. This
+		// fragment doesn't get used anyway.
+		if (stop == null)
+			return v;
 
 		this.stopName = (TextView) v.findViewById(R.id.d_stopname);
 		this.stopName.setText(stop.Name);
@@ -79,15 +82,20 @@ public class DeparturesFragment extends Fragment {
 
 		this.departuresProvider
 				.setDeparturesUpdateListener(this.departuresUpdateListener);
-		this.departuresProvider.startUpdate();
 
 		return v;
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+	public void onResume() {
+		this.departuresProvider.startUpdate();
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
 		this.departuresProvider.stopUpdates();
+		super.onPause();
 	}
 
 	public void setStop(Stop stop) {

@@ -10,6 +10,7 @@ import uk.co.jakeclarke.oxfordbuses.DeparturesProvider.Departures.Bus;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -34,6 +35,7 @@ public class DeparturesProvider {
 
 		@Override
 		public void onResponse(JSONObject response) {
+			Log.d("DeparturesProvider", "Got response! (scn: " + stop.Scn + ")");
 			ArrayList<Bus> buses = new ArrayList<Bus>();
 			try {
 				JSONArray d = response.getJSONArray("d");
@@ -107,11 +109,13 @@ public class DeparturesProvider {
 	}
 
 	public void startUpdate() {
+		Log.d("DeparturesProvider", "Starting updates! (scn: " + stop.Scn + ")");
 		this.shouldAutoUpdate = true;
 		this.updateRunable.run();
 	}
 
 	public void stopUpdates() {
+		Log.d("DeparturesProvider", "Stopping updates! (scn: " + stop.Scn + ")");
 		this.shouldAutoUpdate = false;
 		this.handler.removeCallbacks(updateRunable);
 	}
