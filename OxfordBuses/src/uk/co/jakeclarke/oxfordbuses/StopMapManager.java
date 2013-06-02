@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import uk.co.jakeclarke.oxfordbuses.db.StopsDatabase;
 import uk.me.jstott.jcoord.OSRef;
 import android.content.Context;
 import android.database.SQLException;
@@ -34,12 +35,12 @@ public final class StopMapManager {
 	private JsonObjectRequest jr;
 	private ArrayList<Stop> stops = new ArrayList<Stop>();
 	private StopUpdateListener updateListener;
-	private StopProvider stopDB;
+	private StopsDatabase stopDB;
 
 	public StopMapManager(final Context context,
 			StopUpdateListener updateListener) {
 		this.context = context;
-		this.stopDB = new StopProvider(this.context);
+		this.stopDB = new StopsDatabase(this.context);
 		this.updateListener = updateListener;
 
 		this.listener = new Listener<JSONObject>() {

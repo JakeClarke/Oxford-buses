@@ -1,5 +1,6 @@
 package uk.co.jakeclarke.oxfordbuses;
 
+import uk.co.jakeclarke.oxfordbuses.db.StopsDatabase;
 import uk.co.jakeclarke.oxfordbuses.utils.OxontimeUtils;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -25,7 +26,7 @@ import android.widget.Toast;
 public class ListFavouriteStopsActivity extends ListActivity {
 
 	SimpleCursorAdapter adapter;
-	StopProvider sp;
+	StopsDatabase sp;
 
 	public ListFavouriteStopsActivity() {
 		// TODO Auto-generated constructor stub
@@ -35,7 +36,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setTitle("Favourite stops");
-		sp = new StopProvider(this);
+		sp = new StopsDatabase(this);
 		sp.open();
 		Cursor c = sp.getAllFavourites();
 		adapter = new SimpleCursorAdapter(this, R.layout.favouritestop, c,
@@ -78,7 +79,7 @@ public class ListFavouriteStopsActivity extends ListActivity {
 						new android.content.DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								StopProvider sp = new StopProvider(
+								StopsDatabase sp = new StopsDatabase(
 										ListFavouriteStopsActivity.this);
 								sp.open();
 								sp.deleteFavourite(stopNaptan);

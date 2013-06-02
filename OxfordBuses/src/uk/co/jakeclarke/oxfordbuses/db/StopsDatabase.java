@@ -1,5 +1,6 @@
-package uk.co.jakeclarke.oxfordbuses;
+package uk.co.jakeclarke.oxfordbuses.db;
 
+import uk.co.jakeclarke.oxfordbuses.StopMapManager;
 import uk.co.jakeclarke.oxfordbuses.StopMapManager.Stop;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class StopProvider {
+public class StopsDatabase {
 
 	private static final String TAG = "StopProvider";
 
@@ -30,7 +31,7 @@ public class StopProvider {
 
 	private Context context;
 
-	public StopProvider(Context ctx) {
+	public StopsDatabase(Context ctx) {
 		this.context = ctx;
 		dbHelper = new DatabaseHelper(context);
 	}
@@ -71,7 +72,7 @@ public class StopProvider {
 		}
 	}
 
-	public StopProvider open() throws SQLException {
+	public StopsDatabase open() throws SQLException {
 		db = dbHelper.getWritableDatabase();
 		return this;
 	}
