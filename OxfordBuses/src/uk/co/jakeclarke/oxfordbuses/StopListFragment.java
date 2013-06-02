@@ -133,8 +133,6 @@ public class StopListFragment extends Fragment {
 						for (Stop s : newStops) {
 							stopListAdapter.add(s);
 						}
-
-						// stopListAdapter.notifyDataSetChanged();
 					}
 
 				});

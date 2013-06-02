@@ -23,6 +23,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Provides the stops for the map. Manages the database and queries the service
+ * when requested.
+ */
 public final class StopsProvider {
 
 	private Context context;
@@ -132,12 +136,15 @@ public final class StopsProvider {
 
 		try {
 			synchronized (stopDB) {
+				// lets get all our saved stops
 				this.stopDB.open();
 				Stop[] cachedStops = this.stopDB.getAllStops();
 				if (cachedStops != null) {
+					// our list of saved stops.
 					this.stops.addAll(Arrays.asList(cachedStops));
 					notifyUpdate();
 				} else {
+					// there are no saved stops, get them.
 					this.updateStops();
 				}
 				this.stopDB.close();
@@ -150,6 +157,10 @@ public final class StopsProvider {
 
 	}
 
+	/**
+	 * Queries the web service and will notify the listener when there is a new
+	 * list of stops.
+	 */
 	public void updateStops() {
 		if (jr != null) {
 			Toast.makeText(this.context, R.string.act_refreshing,
