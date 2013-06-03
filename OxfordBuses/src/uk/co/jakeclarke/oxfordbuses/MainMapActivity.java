@@ -84,6 +84,33 @@ public class MainMapActivity extends FragmentActivity {
 		return false;
 	}
 
+	/**
+	 * Loads up the relevant departures.
+	 * 
+	 * @param s
+	 */
+	private void showDepartures(Stop s) {
+		if (hasDoublePanel) {
+			DeparturesFragment departures = new DeparturesFragment();
+			departures.setStop(s);
+			FragmentTransaction transaction = MainMapActivity.this
+					.getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.listframe, departures);
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			// doesn't do anything for some reason.
+			transaction.setBreadCrumbTitle(R.string.departures);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else {
+			Intent i = new Intent(MainMapActivity.this,
+					DeparturesActivity.class);
+
+			i.putExtra(DeparturesActivity.KEY_STOP, s);
+			this.startActivity(i);
+		}
+	}
+
 	private void setUpMapIfNeeded() {
 		// Do a null check to confirm that we have not already instantiated the
 		// map.
@@ -137,51 +164,32 @@ public class MainMapActivity extends FragmentActivity {
 
 						@Override
 						void onSelection(Stop selection) {
-							markerLookup.get(selection).showInfoWindow();
-							map.animateCamera(CameraUpdateFactory
-									.newLatLng(selection.latlong));
+							Marker m = markerLookup.get(selection);
+							if (!m.isInfoWindowShown()) { // one tap for zoom
+								m.showInfoWindow();
+								map.animateCamera(CameraUpdateFactory
+										.newLatLng(selection.latlong));
+							} else { // two taps for show departures.
+								showDepartures(selection);
+							}
 						}
 
-					});
-
-					this.map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-
-						@Override
-						public void onInfoWindowClick(Marker marker) {
-							DeparturesFragment departures = new DeparturesFragment();
-							departures.setStop(stopLookup.get(marker));
-							FragmentTransaction transaction = MainMapActivity.this
-									.getSupportFragmentManager()
-									.beginTransaction();
-
-							transaction.replace(R.id.listframe, departures);
-							transaction
-									.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-							transaction.addToBackStack(null);
-							transaction.commit();
-						}
-
-					});
-
-				} else {
-					// phone action.
-					this.map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-
-						@Override
-						public void onInfoWindowClick(Marker marker) {
-							Intent i = new Intent(MainMapActivity.this,
-									DeparturesActivity.class);
-
-							i.putExtra(DeparturesActivity.KEY_STOP,
-									stopLookup.get(marker));
-							MainMapActivity.this.startActivity(i);
-						}
 					});
 
 				}
+
+				this.map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+					@Override
+					public void onInfoWindowClick(Marker marker) {
+
+						Stop s = stopLookup.get(marker);
+						showDepartures(s);
+					}
+
+				});
 			}
 		}
 
 	}
-
 }

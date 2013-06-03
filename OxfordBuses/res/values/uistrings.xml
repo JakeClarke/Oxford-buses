@@ -3,5 +3,6 @@
     <string name="search_hint">Sms code or stop name</string>
     <string name="refresh_stops">Refresh</string>
     <string name="act_refreshing">Refreshing...</string>
+    <string name="departures">Departures</string>
     
 </resources>
