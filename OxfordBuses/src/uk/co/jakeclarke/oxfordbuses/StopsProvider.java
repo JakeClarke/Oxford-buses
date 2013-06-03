@@ -39,7 +39,7 @@ public final class StopsProvider {
 	private final Listener<JSONObject> listener;
 	private final ErrorListener errorListener;
 	private JsonObjectRequest jr;
-	private ArrayList<Stop> stops = new ArrayList<Stop>();
+	private static ArrayList<Stop> stops = null;
 	private StopUpdateListener updateListener;
 	private StopsDatabase stopDB;
 
@@ -57,7 +57,7 @@ public final class StopsProvider {
 
 			@Override
 			public void onResponse(JSONObject response) {
-				stops.clear();
+				final ArrayList<Stop> stops = new ArrayList<Stop>();
 				int errors = 0;
 				try {
 					JSONArray d = response.getJSONArray("d");
@@ -98,15 +98,19 @@ public final class StopsProvider {
 								+ ", errors:" + errors);
 
 				if (errors == 0) {
-					new Thread(new Runnable() {
+					StopsProvider.stops = stops;
 
-						@Override
+					// save to the db in a seperate thread.
+					new Thread(new Runnable() {
+						final @Override
 						public void run() {
+							final ArrayList<Stop> newstops = stops;
 							synchronized (stopDB) {
 								stopDB.open();
 								Log.d("Stop db", "Saving stops!");
 								stopDB.clear();
-								stopDB.insertStops(stops.toArray(new Stop[0]));
+								stopDB.insertStops(newstops
+										.toArray(new Stop[0]));
 								stopDB.close();
 							}
 							Log.d("Stop db", "Saving stops complete!");
@@ -140,25 +144,31 @@ public final class StopsProvider {
 
 		}
 
-		try {
-			synchronized (stopDB) {
-				// lets get all our saved stops
-				this.stopDB.open();
-				Stop[] cachedStops = this.stopDB.getAllStops();
-				if (cachedStops != null) {
-					// our list of saved stops.
-					this.stops.addAll(Arrays.asList(cachedStops));
-					notifyUpdate();
-				} else {
-					// there are no saved stops, get them.
-					this.updateStops();
+		if (StopsProvider.stops == null) {
+			try {
+				synchronized (stopDB) {
+					// lets get all our saved stops
+					StopsProvider.stops = new ArrayList<Stop>();
+					this.stopDB.open();
+					Stop[] cachedStops = this.stopDB.getAllStops();
+					if (cachedStops != null) {
+						// our list of saved stops.
+						StopsProvider.stops.addAll(Arrays.asList(cachedStops));
+						notifyUpdate();
+					} else {
+						// there are no saved stops, get them.
+						this.updateStops();
+					}
+					this.stopDB.close();
 				}
-				this.stopDB.close();
+			} catch (SQLException e) {
+				Toast.makeText(this.context, "Error getting stops",
+						Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			Toast.makeText(this.context, "Error getting stops",
-					Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
+		} else {
+			Log.d("Stops provider", "Used cached stops!");
+			notifyUpdate();
 		}
 
 	}

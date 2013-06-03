@@ -23,7 +23,7 @@ public class StopListFragment extends Fragment {
 
 	private ListView list;
 	private EditText search;
-	private Stop[] stops;
+	private Stop[] stops = new Stop[0];
 	private ArrayAdapter<Stop> stopListAdapter;
 
 	@Override
