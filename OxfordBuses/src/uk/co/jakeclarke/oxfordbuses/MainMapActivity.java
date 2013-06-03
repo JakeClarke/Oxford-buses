@@ -80,6 +80,8 @@ public class MainMapActivity extends FragmentActivity {
 			Intent i = new Intent(this, StopListActivity.class);
 			this.startActivity(i);
 			return true;
+		} else if (item.getItemId() == R.id.favouritestops) {
+			this.showFavourites();
 		}
 		return false;
 	}
@@ -107,6 +109,36 @@ public class MainMapActivity extends FragmentActivity {
 					DeparturesActivity.class);
 
 			i.putExtra(DeparturesActivity.KEY_STOP, s);
+			this.startActivity(i);
+		}
+	}
+
+	private void showFavourites() {
+		if (hasDoublePanel) {
+			StopListFragment favourites = new StopListFragment();
+			favourites.setStops(this.stopManager.getFavouriteStops());
+
+			favourites.setSelectionListener(new SelectionListener() {
+
+				@Override
+				void onSelection(Stop selection) {
+					tapListItem(selection);
+				}
+
+			});
+
+			FragmentTransaction transaction = this.getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.listframe, favourites);
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			// doesn't do anything for some reason.
+			transaction.setBreadCrumbTitle(R.string.favourites);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else {
+			Intent i = new Intent(MainMapActivity.this,
+					FavouriteStopsActivity.class);
 			this.startActivity(i);
 		}
 	}
@@ -164,14 +196,7 @@ public class MainMapActivity extends FragmentActivity {
 
 						@Override
 						void onSelection(Stop selection) {
-							Marker m = markerLookup.get(selection);
-							if (!m.isInfoWindowShown()) { // one tap for zoom
-								m.showInfoWindow();
-								map.animateCamera(CameraUpdateFactory
-										.newLatLng(selection.latlong));
-							} else { // two taps for show departures.
-								showDepartures(selection);
-							}
+							tapListItem(selection);
 						}
 
 					});
@@ -192,4 +217,20 @@ public class MainMapActivity extends FragmentActivity {
 		}
 
 	}
+
+	/**
+	 * The list tap item behaviour.
+	 * 
+	 * @param selection
+	 */
+	private void tapListItem(Stop selection) {
+		Marker m = markerLookup.get(selection);
+		if (!m.isInfoWindowShown()) { // one tap for zoom
+			m.showInfoWindow();
+			map.animateCamera(CameraUpdateFactory.newLatLng(selection.latlong));
+		} else { // two taps for show departures.
+			showDepartures(selection);
+		}
+	}
+
 }

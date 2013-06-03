@@ -42,7 +42,8 @@ s
             </intent-filter>
         </activity>
         <activity android:name="StopListActivity"></activity>
-        <activity android:name="DeparturesActivity"></activity>
+        <activity android:name="DeparturesActivity" android:label="@string/departures"></activity>
+        <activity android:name="FavouriteStopsActivity" android:label="@string/favourites"></activity>
     </application>
 
 </manifest>

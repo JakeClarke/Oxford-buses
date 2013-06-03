@@ -5,19 +5,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/d_stopname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/d_naptancode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SMS code"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ImageButton
+            android:id="@+id/favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:src="@android:drawable/btn_star_big_off" />
+
+        <TextView
+            android:id="@+id/d_stopname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Stop name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/d_naptancode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/d_stopname"
+            android:text="SMS code"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/d_list"

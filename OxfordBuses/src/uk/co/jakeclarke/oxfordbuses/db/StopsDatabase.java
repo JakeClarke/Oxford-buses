@@ -1,6 +1,5 @@
 package uk.co.jakeclarke.oxfordbuses.db;
 
-import uk.co.jakeclarke.oxfordbuses.StopsProvider;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.content.ContentValues;
 import android.content.Context;
@@ -131,6 +130,11 @@ public class StopsDatabase {
 
 		Cursor mCursor = db.query(true, STOP_TABLE_NAME, null, null, null,
 				null, null, null, null);
+
+		return buildStops(mCursor);
+	}
+
+	private Stop[] buildStops(Cursor mCursor) {
 		if (mCursor != null & mCursor.getCount() > 0) {
 			mCursor.moveToFirst();
 
@@ -155,37 +159,47 @@ public class StopsDatabase {
 			mCursor.close();
 
 			return stops;
-
 		}
-
 		return null;
 	}
 
-	public Cursor getAllFavourites() {
+	public boolean addFavourite(String naptan) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_NAPTAN, naptan);
+		return db.insert(FAVOURITES_TABLE_NAME, null, initialValues) > 0 ? true
+				: false;
+	}
+
+	public boolean removeFavourite(String naptan) {
+		return (db.delete(FAVOURITES_TABLE_NAME, KEY_NAPTAN + "= ?",
+				new String[] { naptan }) > 0) ? true : false;
+	}
+
+	public String[] getFavourites() {
+		String[] res = null;
+
 		Cursor favCursor = db.query(true, FAVOURITES_TABLE_NAME, new String[] {
-				KEY_ID, KEY_NAPTAN, KEY_STOPNAME }, null, null, null, null,
-				KEY_STOPNAME, null);
-		if (favCursor != null)
+				KEY_ID, KEY_NAPTAN }, null, null, null, null, null, null);
+
+		if (favCursor != null) {
 			favCursor.moveToFirst();
-		return favCursor;
-	}
 
-	public int NumberOfRows() {
-		int res;
-		Cursor c = db.query(STOP_TABLE_NAME, new String[] { KEY_NAPTAN,
-				KEY_STOPNAME }, null, null, null, null, null, null);
-		res = c.getCount();
-		c.close();
+			res = new String[favCursor.getCount()];
+
+			if (favCursor.getCount() == 0) {
+				return res;
+			}
+
+			final int colIndex = favCursor.getColumnIndex(KEY_NAPTAN);
+			for (int i = 0; i < favCursor.getCount(); i++) {
+				res[i] = favCursor.getString(colIndex);
+
+				favCursor.moveToNext();
+			}
+
+			return res;
+		}
+
 		return res;
-
 	}
-
-	public int NumberOfFavourites() {
-		int res;
-		Cursor c = this.getAllFavourites();
-		res = c.getCount();
-		c.close();
-		return res;
-	}
-
 }

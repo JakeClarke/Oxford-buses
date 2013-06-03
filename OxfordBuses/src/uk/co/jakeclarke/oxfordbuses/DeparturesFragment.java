@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +21,9 @@ public class DeparturesFragment extends Fragment {
 	private TextView stopName, naptan;
 	private ListView departuresList;
 	private ArrayAdapter<Bus> departuresAdapter;
+	private ImageButton favbutton;
+	private boolean isFavourite = false;
+	private StopsProvider stopsProvider;
 
 	private final DeparturesUpdateListener departuresUpdateListener = new DeparturesUpdateListener() {
 
@@ -50,6 +55,8 @@ public class DeparturesFragment extends Fragment {
 
 		this.departuresList = (ListView) v.findViewById(R.id.d_list);
 
+		this.favbutton = (ImageButton) v.findViewById(R.id.favourite);
+
 		return v;
 	}
 
@@ -57,6 +64,28 @@ public class DeparturesFragment extends Fragment {
 	public void onResume() {
 		this.stopName.setText(stop.Name);
 		this.naptan.setText(stop.Naptan);
+
+		this.stopsProvider = new StopsProvider(this.getActivity());
+
+		this.isFavourite = this.stopsProvider.isFavouriteStop(stop);
+		this.updateFavIcon();
+
+		this.favbutton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (DeparturesFragment.this.isFavourite) {
+					stopsProvider.removeFavourite(stop);
+
+					DeparturesFragment.this.isFavourite = false;
+				} else {
+					stopsProvider.addFavourite(stop);
+
+					DeparturesFragment.this.isFavourite = true;
+				}
+
+				DeparturesFragment.this.updateFavIcon();
+			}
+		});
 
 		this.departuresAdapter = new ArrayAdapter<Bus>(this.getActivity()
 				.getApplicationContext(), R.layout.departuresitem,
@@ -98,6 +127,12 @@ public class DeparturesFragment extends Fragment {
 
 	public void setStop(Stop stop) {
 		this.stop = stop;
+	}
+
+	private void updateFavIcon() {
+		this.favbutton
+				.setImageResource((this.isFavourite) ? android.R.drawable.star_big_on
+						: android.R.drawable.star_big_off);
 	}
 
 }

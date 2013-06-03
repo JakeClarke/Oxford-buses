@@ -40,6 +40,8 @@ public final class StopsProvider {
 	private final ErrorListener errorListener;
 	private JsonObjectRequest jr;
 	private static ArrayList<Stop> stops = null;
+	private static ArrayList<String> favstops = null;
+	private final static Object dblock = new Object();
 	private StopUpdateListener updateListener;
 	private StopsDatabase stopDB;
 
@@ -105,7 +107,7 @@ public final class StopsProvider {
 						final @Override
 						public void run() {
 							final ArrayList<Stop> newstops = stops;
-							synchronized (stopDB) {
+							synchronized (dblock) {
 								stopDB.open();
 								Log.d("Stop db", "Saving stops!");
 								stopDB.clear();
@@ -146,7 +148,7 @@ public final class StopsProvider {
 
 		if (StopsProvider.stops == null) {
 			try {
-				synchronized (stopDB) {
+				synchronized (dblock) {
 					// lets get all our saved stops
 					StopsProvider.stops = new ArrayList<Stop>();
 					this.stopDB.open();
@@ -159,6 +161,9 @@ public final class StopsProvider {
 						// there are no saved stops, get them.
 						this.updateStops();
 					}
+					StopsProvider.favstops = new ArrayList<String>(
+							Arrays.asList(this.stopDB.getFavourites()));
+
 					this.stopDB.close();
 				}
 			} catch (SQLException e) {
@@ -273,7 +278,57 @@ public final class StopsProvider {
 	}
 
 	public Stop[] getStops() {
-		return this.stops.toArray(new Stop[0]);
+		return stops.toArray(new Stop[0]);
 	}
 
+	public Stop[] getFavouriteStops() {
+		Stop[] stop = new Stop[favstops.size()];
+
+		int i = 0;
+		for (Stop s : stops) {
+			if (isFavouriteStop(s)) {
+				stop[i++] = s;
+			}
+		}
+
+		return stop;
+	}
+
+	public boolean isFavouriteStop(Stop s) {
+		return favstops.contains(s.Naptan);
+	}
+
+	public void addFavourite(final Stop s) {
+		favstops.add(s.Naptan);
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (dblock) {
+					stopDB.open();
+					stopDB.addFavourite(s.Naptan);
+					stopDB.close();
+				}
+			}
+
+		}).start();
+	}
+
+	public void removeFavourite(final Stop s) {
+		favstops.remove(s.Naptan);
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (dblock) {
+					stopDB.open();
+					stopDB.removeFavourite(s.Naptan);
+					stopDB.close();
+				}
+			}
+
+		}).start();
+	}
 }

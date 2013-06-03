@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="StopName"
-        android:textSize="17px" >
+        android:textAppearance="?android:attr/textAppearanceMedium" >
 
     </TextView>
 
@@ -18,7 +18,8 @@
         android:id="@+id/stopnaptan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="naptan" >
+        android:hint="naptan" 
+        android:textAppearance="?android:attr/textAppearanceSmall">
 
     </TextView>
 

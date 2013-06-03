@@ -94,6 +94,8 @@ public class StopListFragment extends Fragment {
 
 		};
 
+		this.updateAdapter();
+
 	}
 
 	public void setStops(Stop[] stops) {
@@ -106,6 +108,10 @@ public class StopListFragment extends Fragment {
 	Handler h = new Handler();
 
 	private void updateAdapter() {
+
+		if (this.stops == null || this.stops.length == 0
+				|| this.stopListAdapter == null)
+			return;
 
 		Runnable rs = new Runnable() {
 
