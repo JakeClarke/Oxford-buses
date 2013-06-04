@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import uk.co.jakeclarke.oxfordbuses.StopListFragment.SelectionListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
+import uk.co.jakeclarke.oxfordbuses.settings.SettingsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -82,6 +83,9 @@ public class MainMapActivity extends FragmentActivity {
 			return true;
 		} else if (item.getItemId() == R.id.favouritestops) {
 			this.showFavourites();
+		} else if (item.getItemId() == R.id.menu_settings) {
+			Intent i = new Intent(this, SettingsActivity.class);
+			this.startActivity(i);
 		}
 		return false;
 	}

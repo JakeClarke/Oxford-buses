@@ -1,0 +1,8 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference 
+        android:title="@string/about">
+        <intent 
+            android:targetPackage="uk.co.jakeclarke.oxfordbuses"
+            android:targetClass="uk.co.jakeclarke.oxfordbuses.settings.AboutActivity"/>
+    </Preference>
+</PreferenceScreen>

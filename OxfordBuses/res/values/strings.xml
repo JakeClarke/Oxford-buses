@@ -2,5 +2,7 @@
 <resources>
     <string name="hello">Hello World, Menu!</string>
     <string name="app_name">Oxford buses</string>
-    <string name="app_id">245658886088</string>
+    <string name="settings">Settings</string>
+    <string name="legalnotices">Legal Notices</string>
+    <string name="about">About</string>
 </resources>

@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@null"
+            android:contentDescription="@string/favourites"
             android:src="@android:drawable/btn_star_big_off" />
 
         <TextView

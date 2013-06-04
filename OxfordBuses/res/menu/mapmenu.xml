@@ -3,6 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
 <item android:id="@+id/refresh" android:title="@string/refresh_stops" android:icon="@drawable/ic_menu_refresh" android:showAsAction="ifRoom|withText"></item><item android:title="List Stops" android:id="@+id/listbutton" android:titleCondensed="List" android:icon="@android:drawable/ic_menu_sort_by_size" android:showAsAction="always|withText"></item>
 <item android:id="@+id/favouritestops" android:title="@string/favourites" android:icon="@android:drawable/btn_star_big_off" android:showAsAction="always|withText"></item>
-<item android:id="@+id/menu_settings" android:title="Settings" android:icon="@android:drawable/ic_menu_preferences" android:showAsAction="ifRoom"/>
+<item android:id="@+id/menu_settings" android:title="@string/settings" android:icon="@android:drawable/ic_menu_preferences" android:showAsAction="ifRoom"/>
 
 </menu>
