@@ -5,7 +5,6 @@ import uk.co.jakeclarke.oxfordbuses.DeparturesProvider.DeparturesUpdateListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +24,7 @@ public class DeparturesFragment extends Fragment {
 	private ImageButton favbutton;
 	private boolean isFavourite = false;
 	private StopsProvider stopsProvider;
+	private TextView emptyListText;
 
 	private boolean isProviderInitialised = false;
 
@@ -36,13 +36,14 @@ public class DeparturesFragment extends Fragment {
 			for (Bus b : departuresProvider.getDepartures().buses) {
 				departuresAdapter.add(b);
 			}
+			DeparturesFragment.this.emptyListText
+					.setText(R.string.getting_departures_none);
 		}
 
 		@Override
 		void onError(DeparturesProvider stopMapManager) {
-			// silently log, we don't need to notify the user really since it
-			// will auto retry.
-			Log.i("Departures", "Failed to get departures");
+			DeparturesFragment.this.emptyListText
+					.setText(R.string.getting_departures_err);
 		}
 
 	};
@@ -124,6 +125,10 @@ public class DeparturesFragment extends Fragment {
 				DeparturesFragment.this.updateFavIcon();
 			}
 		});
+
+		this.emptyListText = (TextView) v.findViewById(android.R.id.empty);
+		this.emptyListText.setText(R.string.getting_departures);
+		this.departuresList.setEmptyView(this.emptyListText);
 
 		if (this.stop != null) {
 			updateUI();

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="3px" >
+    android:padding="3dip" >
 
     <TextView
         android:id="@+id/stopname"
@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:hint="naptan" 
         android:textAppearance="?android:attr/textAppearanceSmall">
-
     </TextView>
 
 </LinearLayout>

@@ -22,5 +22,13 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/stoplistitem" >
     </ListView>
+    
+   <TextView
+       android:id="@android:id/empty"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:gravity="center"
+       android:text="@string/nostops" >
+	</TextView>
 
 </LinearLayout>

@@ -4,11 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d0e9ff"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dip"
+        android:paddingTop="3dip" >
 
         <ImageButton
             android:id="@+id/favourite"
@@ -47,5 +51,14 @@
         tools:listitem="@layout/departuresitem" >
 
     </ListView>
+    
+    <TextView
+    	android:id="@android:id/empty"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="#fff"
+    	android:gravity="center"
+    	android:text="@string/getting_departures" >
+	</TextView>
 
 </LinearLayout>

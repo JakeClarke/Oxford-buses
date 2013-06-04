@@ -5,4 +5,9 @@
     <string name="act_refreshing">Refreshing...</string>
     <string name="departures">Departures</string>
     <string name="favourites">Favourites</string>
+    <string name="getting_departures_err">Failed to get time table, retrying...</string>
+    <string name="getting_departures">Getting departures...</string><string name="getting_departures_none">No departure information available.</string>
+    <string name="nostops">No stops.</string>
+    <string name="getting_stops_err">Error getting stops.</string>
+    <string name="getting_stops">Getting stops...</string>
 </resources>

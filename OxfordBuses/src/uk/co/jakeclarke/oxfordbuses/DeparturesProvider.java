@@ -37,29 +37,29 @@ public class DeparturesProvider {
 		public void onResponse(JSONObject response) {
 			Log.d("DeparturesProvider", "Got response! (scn: " + stop.Scn + ")");
 			ArrayList<Bus> buses = new ArrayList<Bus>();
-			try {
-				JSONArray d = response.getJSONArray("d");
-				for (int i = 0; i < d.length(); i++) {
-					try {
-						JSONObject bjo = d.getJSONObject(i);
-						Departures.Bus b = new Departures.Bus();
-						b.destination = bjo.getString("Destination");
-						if (b.destination == "null")
-							break;
-						b.destination = b.destination.replace("&nbsp;", " ");
-						b.service = bjo.getString("Service");
-						b.service = b.service.replace("&nbsp;", " ");
-						b.time = bjo.getString("Time");
-						b.time = b.time.replace("&nbsp;", " ");
-						buses.add(b);
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			JSONArray d = response.optJSONArray("d");
+			if (d == null) {
+				departures.buses = buses;
+				notifyUpdate();
+				return;
 			}
-
+			for (int i = 0; i < d.length(); i++) {
+				try {
+					JSONObject bjo = d.getJSONObject(i);
+					Departures.Bus b = new Departures.Bus();
+					b.destination = bjo.getString("Destination");
+					if (b.destination == "null")
+						break;
+					b.destination = b.destination.replace("&nbsp;", " ");
+					b.service = bjo.getString("Service");
+					b.service = b.service.replace("&nbsp;", " ");
+					b.time = bjo.getString("Time");
+					b.time = b.time.replace("&nbsp;", " ");
+					buses.add(b);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 			departures.buses = buses;
 			notifyUpdate();
 
