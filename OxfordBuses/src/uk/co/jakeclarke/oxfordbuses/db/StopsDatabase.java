@@ -15,7 +15,8 @@ public class StopsDatabase {
 	private static final String TAG = "StopProvider";
 
 	private static final String DATABASE_NAME = "stop.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5; // set to 5 to force an
+													// update.
 	private static final String STOP_TABLE_NAME = "stops";
 	private static final String FAVOURITES_TABLE_NAME = "favourites";
 	private static final String KEY_NAPTAN = "naptancode";
@@ -58,8 +59,14 @@ public class StopsDatabase {
 			if (oldversion == 2 && newVersion == 3) {
 				createFavouritesTable(db);
 			} else {
-				db.execSQL("DROP TABLE IF EXISTS" + STOP_TABLE_NAME);
-				db.execSQL("DROP TABLE IF EXISTS" + FAVOURITES_TABLE_NAME);
+				try {
+					db.execSQL("DROP TABLE IF EXISTS " + STOP_TABLE_NAME);
+					db.execSQL("DROP TABLE IF EXISTS " + FAVOURITES_TABLE_NAME);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				onCreate(db);
 			}
 
 		}
