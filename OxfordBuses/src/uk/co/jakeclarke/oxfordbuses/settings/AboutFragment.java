@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,8 @@ public class AboutFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.about, container, false);
-
+		TextView os = (TextView) v.findViewById(R.id.opensource);
+		Linkify.addLinks(os, Linkify.ALL);
 		TextView tv = (TextView) v.findViewById(R.id.legal);
 		tv.setText(GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this
 				.getActivity()));

@@ -9,6 +9,13 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/opensource"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:text="@string/opensource" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/legalnotices"
