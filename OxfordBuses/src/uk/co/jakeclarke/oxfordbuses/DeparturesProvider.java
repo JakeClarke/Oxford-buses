@@ -81,6 +81,7 @@ public class DeparturesProvider {
 
 		@Override
 		public void run() {
+			Log.d("DeparturesProvider", "Added request.");
 			requestQueue.add(jsonRequest);
 			if (shouldAutoUpdate)
 				handler.postDelayed(updateRunable, UPDATE_DELAY);
