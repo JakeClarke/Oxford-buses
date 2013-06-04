@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.co.jakeclarke.oxfordbuses"
-    android:versionCode="5"
-    android:versionName="2.0.2" >
+    android:versionCode="6"
+    android:versionName="2.0.3" >
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -30,7 +30,7 @@ s
         android:label="@string/app_name" android:hardwareAccelerated="true" android:theme="@style/LightThemeSelector">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDfLAiwKG86RvpXNwZox5eze_eKb8tLrms" />
+            android:value="AIzaSyC8xnqaJiJlx6igSiVczMIJqx-hJT0JZiI" />
 
         <activity
             android:name="MainMapActivity"

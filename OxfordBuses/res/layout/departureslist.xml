@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#d0e9ff"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -41,8 +42,10 @@
     <ListView
         android:id="@+id/d_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#fff"
         tools:listitem="@layout/departuresitem" >
+
     </ListView>
 
 </LinearLayout>

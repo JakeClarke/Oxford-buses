@@ -5,6 +5,7 @@ import uk.co.jakeclarke.oxfordbuses.DeparturesProvider.DeparturesUpdateListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,8 @@ public class DeparturesFragment extends Fragment {
 	private boolean isFavourite = false;
 	private StopsProvider stopsProvider;
 
+	private boolean isProviderInitialised = false;
+
 	private final DeparturesUpdateListener departuresUpdateListener = new DeparturesUpdateListener() {
 
 		@Override
@@ -37,11 +40,58 @@ public class DeparturesFragment extends Fragment {
 
 		@Override
 		void onError(DeparturesProvider stopMapManager) {
-			// TODO Auto-generated method stub
-
+			// silently log, we don't need to notify the user really since it
+			// will auto retry.
+			Log.i("Departures", "Failed to get departures");
 		}
 
 	};
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		this.stopsProvider = new StopsProvider(this.getActivity());
+
+		this.departuresAdapter = new ArrayAdapter<Bus>(this.getActivity(),
+				R.layout.departuresitem, R.id.destination) {
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View v = super.getView(position, convertView, parent);
+				Bus b = this.getItem(position);
+				TextView serviceName = (TextView) v
+						.findViewById(R.id.destination);
+				serviceName.setText(b.destination);
+
+				TextView serviceNum = (TextView) v.findViewById(R.id.service);
+				serviceNum.setText(b.service);
+
+				TextView time = (TextView) v.findViewById(R.id.time);
+				time.setText(b.time);
+
+				return v;
+			}
+		};
+
+		// Annoyingly if you create a fragment from within a layout this gets
+		// called before it has a chance to set the stop.
+		if (stop != null) {
+			initProvider();
+		} // otherwise we init the provider when the stop is set.
+		isProviderInitialised = true;
+	}
+
+	/**
+	 * 
+	 */
+	private void initProvider() {
+		this.departuresProvider = new DeparturesProvider(this.getActivity()
+				.getApplicationContext(), stop);
+		this.departuresProvider
+				.setDeparturesUpdateListener(this.departuresUpdateListener);
+
+		this.departuresProvider.startUpdate();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,21 +104,9 @@ public class DeparturesFragment extends Fragment {
 		this.naptan = (TextView) v.findViewById(R.id.d_naptancode);
 
 		this.departuresList = (ListView) v.findViewById(R.id.d_list);
+		this.departuresList.setAdapter(departuresAdapter);
 
 		this.favbutton = (ImageButton) v.findViewById(R.id.favourite);
-
-		return v;
-	}
-
-	@Override
-	public void onResume() {
-		this.stopName.setText(stop.Name);
-		this.naptan.setText(stop.Naptan);
-
-		this.stopsProvider = new StopsProvider(this.getActivity());
-
-		this.isFavourite = this.stopsProvider.isFavouriteStop(stop);
-		this.updateFavIcon();
 
 		this.favbutton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -87,36 +125,23 @@ public class DeparturesFragment extends Fragment {
 			}
 		});
 
-		this.departuresAdapter = new ArrayAdapter<Bus>(this.getActivity()
-				.getApplicationContext(), R.layout.departuresitem,
-				R.id.destination) {
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				View v = super.getView(position, convertView, parent);
-				Bus b = this.getItem(position);
-				TextView serviceName = (TextView) v
-						.findViewById(R.id.destination);
-				serviceName.setText(b.destination);
+		if (this.stop != null) {
+			updateUI();
 
-				TextView serviceNum = (TextView) v.findViewById(R.id.service);
-				serviceNum.setText(b.service);
+		}
 
-				TextView time = (TextView) v.findViewById(R.id.time);
-				time.setText(b.time);
+		return v;
+	}
 
-				return v;
-			}
-		};
-		this.departuresList.setAdapter(departuresAdapter);
+	/**
+	 * 
+	 */
+	private void updateUI() {
+		this.stopName.setText(stop.Name);
+		this.naptan.setText(stop.Naptan);
 
-		this.departuresProvider = new DeparturesProvider(this.getActivity()
-				.getApplicationContext(), stop);
-
-		this.departuresProvider
-				.setDeparturesUpdateListener(this.departuresUpdateListener);
-
-		this.departuresProvider.startUpdate();
-		super.onResume();
+		this.isFavourite = this.stopsProvider.isFavouriteStop(stop);
+		this.updateFavIcon();
 	}
 
 	@Override
@@ -127,6 +152,16 @@ public class DeparturesFragment extends Fragment {
 
 	public void setStop(Stop stop) {
 		this.stop = stop;
+		// This can be called before anything else has be which would cause the
+		// following calls to fail.
+		if (isProviderInitialised) {
+			// Stop the previous provider before creating a new one.
+			if (this.departuresProvider != null) {
+				this.departuresProvider.stopUpdates();
+			}
+			initProvider();
+			updateUI();
+		}
 	}
 
 	private void updateFavIcon() {
