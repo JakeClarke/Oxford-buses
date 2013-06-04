@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -119,9 +122,19 @@ public class MainMapActivity extends FragmentActivity {
 
 	private void showFavourites() {
 		if (hasDoublePanel) {
-			StopListFragment favourites = new StopListFragment();
-			favourites.setStops(this.stopManager.getFavouriteStops());
+			StopListFragment favourites = new StopListFragment() {
+				@Override
+				public View onCreateView(LayoutInflater inflater,
+						ViewGroup container, Bundle savedInstanceState) {
+					View v = super.onCreateView(inflater, container,
+							savedInstanceState);
 
+					// allows us to refresh the source when departures have
+					// gone.
+					this.setStops(stopManager.getFavouriteStops());
+					return v;
+				}
+			};
 			favourites.setSelectionListener(new SelectionListener() {
 
 				@Override
@@ -134,11 +147,10 @@ public class MainMapActivity extends FragmentActivity {
 			FragmentTransaction transaction = this.getSupportFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.listframe, favourites);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			// doesn't do anything for some reason.
-			transaction.setBreadCrumbTitle(R.string.favourites);
-			transaction.addToBackStack(null);
+			transaction = transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+					.setBreadCrumbTitle(R.string.favourites)
+					.addToBackStack(null);
 			transaction.commit();
 		} else {
 			Intent i = new Intent(MainMapActivity.this,

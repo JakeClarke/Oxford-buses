@@ -109,9 +109,13 @@ public class StopListFragment extends Fragment {
 
 	private void updateAdapter() {
 
-		if (this.stops == null || this.stops.length == 0
-				|| this.stopListAdapter == null)
+		if (this.stopListAdapter == null)
 			return;
+
+		if (this.stops == null || this.stops.length == 0) {
+			this.stopListAdapter.clear();
+			return;
+		}
 
 		Runnable rs = new Runnable() {
 

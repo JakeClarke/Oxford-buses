@@ -21,8 +21,6 @@ public class FavouriteStopsActivity extends FragmentActivity {
 
 		stopsProvider = new StopsProvider(this);
 
-		this.stopListFragment.setStops(this.stopsProvider.getStops());
-
 		this.stopListFragment.setSelectionListener(new SelectionListener() {
 
 			@Override
@@ -38,7 +36,7 @@ public class FavouriteStopsActivity extends FragmentActivity {
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		this.stopListFragment.setStops(this.stopsProvider.getFavouriteStops());
+		super.onResume();
 	}
 }
