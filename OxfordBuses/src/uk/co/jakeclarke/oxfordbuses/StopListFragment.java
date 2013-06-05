@@ -6,22 +6,19 @@ import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class StopListFragment extends Fragment {
+public class StopListFragment extends ListFragment {
 
-	private ListView list;
 	private EditText search;
 	private Stop[] stops = new Stop[0];
 	private ArrayAdapter<Stop> stopListAdapter;
@@ -31,8 +28,6 @@ public class StopListFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View v = inflater.inflate(R.layout.stoplist, container, false);
-		this.list = (ListView) v.findViewById(R.id.stoplist);
-		this.list.setAdapter(this.stopListAdapter);
 
 		this.search = (EditText) v.findViewById(R.id.d_stopname);
 		this.search.addTextChangedListener(new TextWatcher() {
@@ -58,21 +53,16 @@ public class StopListFragment extends Fragment {
 			}
 		});
 
-		this.list.setAdapter(stopListAdapter);
-
-		list.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				if (selectionListener != null)
-					selectionListener.onSelection(((Stop) arg0
-							.getItemAtPosition(position)));
-
-			}
-		});
+		this.setListAdapter(this.stopListAdapter);
 
 		return v;
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		Stop s = this.stopListAdapter.getItem(position);
+		if (selectionListener != null)
+			selectionListener.onSelection(s);
 	}
 
 	public void onAttach(Activity activity) {

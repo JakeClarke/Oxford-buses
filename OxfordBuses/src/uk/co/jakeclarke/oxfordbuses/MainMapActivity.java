@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +34,8 @@ public class MainMapActivity extends FragmentActivity {
 	private HashMap<Stop, Marker> markerLookup = new HashMap<Stop, Marker>();
 	private StopsProvider stopManager;
 	private boolean hasDoublePanel = false;
+
+	private boolean wasRefreshRequested = false;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,7 +81,13 @@ public class MainMapActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.refresh) {
-			this.stopManager.updateStops();
+			if (!this.wasRefreshRequested) {
+				this.stopManager.updateStops();
+				this.wasRefreshRequested = true;
+			} else {
+				Toast.makeText(this, R.string.getting_stops_in_progress,
+						Toast.LENGTH_SHORT).show();
+			}
 			return true;
 		} else if (item.getItemId() == R.id.listbutton) {
 			Intent i = new Intent(this, StopListActivity.class);
@@ -86,9 +95,11 @@ public class MainMapActivity extends FragmentActivity {
 			return true;
 		} else if (item.getItemId() == R.id.favouritestops) {
 			this.showFavourites();
+			return true;
 		} else if (item.getItemId() == R.id.menu_settings) {
 			Intent i = new Intent(this, SettingsActivity.class);
 			this.startActivity(i);
+			return true;
 		}
 		return false;
 	}
@@ -112,8 +123,7 @@ public class MainMapActivity extends FragmentActivity {
 			transaction.addToBackStack(null);
 			transaction.commit();
 		} else {
-			Intent i = new Intent(MainMapActivity.this,
-					DeparturesActivity.class);
+			Intent i = new Intent(this, DeparturesActivity.class);
 
 			i.putExtra(DeparturesActivity.KEY_STOP, s);
 			this.startActivity(i);
@@ -175,6 +185,7 @@ public class MainMapActivity extends FragmentActivity {
 							@Override
 							void onUpdate(StopsProvider stopMapManager) {
 								stopLookup.clear();
+								markerLookup.clear();
 
 								Stop[] stops = stopMapManager.getStops();
 
@@ -183,7 +194,6 @@ public class MainMapActivity extends FragmentActivity {
 								}
 
 								for (int i = 0; i < stops.length; i++) {
-									// this does nothing.
 									Stop s = stops[i];
 
 									Marker m = map
@@ -195,12 +205,22 @@ public class MainMapActivity extends FragmentActivity {
 									markerLookup.put(s, m);
 								}
 
+								if (wasRefreshRequested) {
+									Toast.makeText(MainMapActivity.this,
+											R.string.getting_stops_complete,
+											Toast.LENGTH_LONG).show();
+									wasRefreshRequested = false;
+								}
+
 							}
 
 							@Override
 							void onError(StopsProvider stopMapManager) {
-								// TODO Auto-generated method stub
+								Toast.makeText(MainMapActivity.this,
+										R.string.getting_stops_err,
+										Toast.LENGTH_LONG).show();
 
+								wasRefreshRequested = false;
 							}
 
 						});

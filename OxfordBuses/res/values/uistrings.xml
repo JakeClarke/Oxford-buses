@@ -10,4 +10,6 @@
     <string name="nostops">No stops.</string>
     <string name="getting_stops_err">Error getting stops.</string>
     <string name="getting_stops">Getting stops...</string>
+    <string name="getting_stops_complete">Refresh stops complete!</string>
+    <string name="getting_stops_in_progress">Stops refresh already requested.</string>
 </resources>

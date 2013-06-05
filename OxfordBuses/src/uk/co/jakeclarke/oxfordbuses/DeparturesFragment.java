@@ -4,22 +4,20 @@ import uk.co.jakeclarke.oxfordbuses.DeparturesProvider.Departures.Bus;
 import uk.co.jakeclarke.oxfordbuses.DeparturesProvider.DeparturesUpdateListener;
 import uk.co.jakeclarke.oxfordbuses.StopsProvider.Stop;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
-public class DeparturesFragment extends Fragment {
+public class DeparturesFragment extends ListFragment {
 
 	private Stop stop;
 	private DeparturesProvider departuresProvider;
 	private TextView stopName, naptan;
-	private ListView departuresList;
 	private ArrayAdapter<Bus> departuresAdapter;
 	private ImageButton favbutton;
 	private boolean isFavourite = false;
@@ -104,8 +102,7 @@ public class DeparturesFragment extends Fragment {
 
 		this.naptan = (TextView) v.findViewById(R.id.d_naptancode);
 
-		this.departuresList = (ListView) v.findViewById(R.id.d_list);
-		this.departuresList.setAdapter(departuresAdapter);
+		this.setListAdapter(departuresAdapter);
 
 		this.favbutton = (ImageButton) v.findViewById(R.id.favourite);
 
@@ -128,11 +125,9 @@ public class DeparturesFragment extends Fragment {
 
 		this.emptyListText = (TextView) v.findViewById(android.R.id.empty);
 		this.emptyListText.setText(R.string.getting_departures);
-		this.departuresList.setEmptyView(this.emptyListText);
 
 		if (this.stop != null) {
 			updateUI();
-
 		}
 
 		return v;
